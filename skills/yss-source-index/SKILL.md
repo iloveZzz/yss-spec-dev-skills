@@ -14,7 +14,7 @@ Use this maintenance skill to keep YSS skills grounded in current source and doc
 ## Source Location Policy
 
 - Backend component source is environment-specific. Use `references/source-location.md` before trusting any generated path.
-- Preferred explicit setting: `YSS_SOURCE_ROOT=/absolute./path/to/yss-cloud-microservice`.
+- Preferred explicit setting: `YSS_SOURCE_ROOT=/absolute/path/to/yss-cloud-microservice`.
 - Frontend YSS UI components: `the consuming project's optional YSS documentation`
 - Frontend YSS UI hooks: `the consuming project's optional YSS documentation`
 - Frontend YSS UI skill docs: `the consuming project's optional YSS documentation`
@@ -24,9 +24,9 @@ Use this maintenance skill to keep YSS skills grounded in current source and doc
 Run:
 
 ```bash
-YSS_SKILLS_ROOT=$YSS_SKILLS_ROOT \
-YSS_SOURCE_ROOT=./path/to/yss-cloud-microservice \
-python3 $YSS_SKILLS_ROOT/yss-source-index/scripts/refresh-yss-skill-index.py
+export YSS_SKILLS_ROOT="./path/to/yss-skills"
+export YSS_SOURCE_ROOT="./path/to/yss-cloud-microservice"
+python3 "$YSS_SKILLS_ROOT/yss-source-index/scripts/refresh-yss-skill-index.py"
 ```
 
 Backend-only refreshes may set `YSS_REFRESH_FRONTEND=false` to avoid unrelated frontend timestamp churn.

@@ -10,14 +10,22 @@
 
 ```bash
 # 查看可用技能
-npx skills add iloveZzz/yss-spec-dev-skills --list
+npx skills@latest add iloveZzz/yss-spec-dev-skills --list
 
 # 安装指定技能
-npx skills add iloveZzz/yss-spec-dev-skills --skill yss-validation
-npx skills add iloveZzz/yss-spec-dev-skills --skill yss-ui
+npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-validation
+npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-ui
 
-# 安装全部技能到检测到的 Agent
-npx skills add iloveZzz/yss-spec-dev-skills --skill '*' --agent '*' --yes
+# 自动适配当前环境：检测到单一 Agent 时直接安装，多 Agent 时按 CLI 提示选择
+npx skills@latest add iloveZzz/yss-spec-dev-skills
+
+# 明确安装到 Codex（非交互）
+npx skills@latest add iloveZzz/yss-spec-dev-skills \
+  --agent codex \
+  --yes
+
+# 安装到所有受支持的 Agent；会创建多个平台目录，请谨慎使用
+npx skills@latest add iloveZzz/yss-spec-dev-skills --all
 ```
 
 `api-integration` 和 `microapp-commit` 是兼容历史引用的 skill 名称；其余技能通常使用 `yss-*` 名称。安装指定技能时以 `--list` 输出的名称为准。
@@ -36,8 +44,8 @@ npx skills add iloveZzz/yss-spec-dev-skills --skill '*' --agent '*' --yes
 公开仓库中包含有效 `SKILL.md` 的技能会由 skills.sh 自动发现并建立页面；`skills` CLI 默认发送匿名使用数据，用于改进 CLI 和使用统计。可通过以下任一环境变量关闭：
 
 ```bash
-DISABLE_TELEMETRY=1 npx skills add iloveZzz/yss-spec-dev-skills --skill yss-ui
-DO_NOT_TRACK=1 npx skills add iloveZzz/yss-spec-dev-skills --skill yss-ui
+DISABLE_TELEMETRY=1 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-ui
+DO_NOT_TRACK=1 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-ui
 ```
 
 技能可能包含脚本、代码示例和外部工具调用。安装前请审查对应 `SKILL.md`、`references/`、`assets/`、`scripts/` 和 skills.sh 安全审计结果；审计结果可能延迟，也不是绝对安全保证。不要把本仓库当作可执行代码的可信边界。
