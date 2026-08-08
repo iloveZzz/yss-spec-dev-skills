@@ -33,7 +33,7 @@ npx skills add iloveZzz/yss-spec-dev-skills --skill '*' --agent '*' --yes
 
 ## 隐私与安全
 
-`skills` CLI 默认发送匿名使用数据，帮助改进 CLI，并使仓库出现在 skills.sh 的发现页面和使用统计中。可通过以下任一环境变量关闭：
+公开仓库中包含有效 `SKILL.md` 的技能会由 skills.sh 自动发现并建立页面；`skills` CLI 默认发送匿名使用数据，用于改进 CLI 和使用统计。可通过以下任一环境变量关闭：
 
 ```bash
 DISABLE_TELEMETRY=1 npx skills add iloveZzz/yss-spec-dev-skills --skill yss-ui
