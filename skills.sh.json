@@ -26,11 +26,8 @@
         "yss-domain",
         "yss-dto",
         "yss-jdbc",
-        "yss-mapper-dynamic",
         "yss-mybatis",
-        "yss-repository",
-        "yss-sql-condition",
-        "yss-sql-tpl"
+        "yss-repository"
       ]
     },
     {
@@ -66,15 +63,10 @@
       "skills": [
         "yss-cache",
         "yss-dictionary",
-        "yss-dir",
         "yss-distributed-id",
-        "yss-duckdb",
         "yss-excel-mvc",
         "yss-exception",
-        "yss-file",
-        "yss-filerunner",
         "yss-log",
-        "yss-mail",
         "yss-resilience4j",
         "yss-security-algorithm",
         "yss-taskflow",
@@ -89,8 +81,7 @@
       "title": "质量治理",
       "description": "用于审计、质量门禁和工程治理的技能。",
       "skills": [
-        "yss-audit-log",
-        "yss-quality"
+        "yss-audit-log"
       ]
     }
   ]

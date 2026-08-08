@@ -203,16 +203,6 @@
       ]
     },
     {
-      "directory": "yss-dir",
-      "name": "yss-dir",
-      "description": "Use when 用于 YSS 目录/标准目录组件接入、目录树、目录资源、EnableDirManage、StandardDir、StandardDirResource、目录权限或目录缓存排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
       "directory": "yss-distributed-id",
       "name": "yss-distributed-id",
       "description": "Use when 用于 YSS 分布式 ID 组件的接入与排障。当用户提到 Leaf、CosId、号段模式、雪花算法、AutoIdInterceptor、MyBatis 自动注入 ID 或主键生成策略时调用。",
@@ -264,16 +254,6 @@
       ]
     },
     {
-      "directory": "yss-duckdb",
-      "name": "yss-duckdb",
-      "description": "Use when 用于 YSS DuckDB 组件接入、DuckDB 查询、嵌入式分析和相关配置排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
       "directory": "yss-excel-mvc",
       "name": "yss-excel-mvc",
       "description": "Use when 用于 Spring MVC 下的 Excel 导入导出实现。当用户提到 RequestExcel、ResponseExcel、Excel 导入解析、Excel 下载、动态列导出或导入导出接口异常时调用。",
@@ -293,26 +273,6 @@
       "directory": "yss-exception",
       "name": "yss-exception",
       "description": "Use when 用于 YSS exception 组件、统一异常模型、异常处理、错误码和异常 starter 接入排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
-      "directory": "yss-file",
-      "name": "yss-file",
-      "description": "Use when 用于 YSS 文件基础组件、文件客户端、文件公共模型、文件管理服务、文件解析、上传下载和文件元数据排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
-      "directory": "yss-filerunner",
-      "name": "yss-filerunner",
-      "description": "Use when 用于 YSS filerunner parent、文件运行 starter、client/core 文件执行流程和文件任务排障。",
       "files": [
         "SKILL.md",
         "agents/openai.yaml",
@@ -378,26 +338,6 @@
       "directory": "yss-log",
       "name": "yss-log",
       "description": "Use when 用于 YSS 日志 starter、日志链路、日志配置、请求日志或业务日志接入和排障。当用户提到 yss-component-log-starter、日志 starter 或日志不输出时调用。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
-      "directory": "yss-mail",
-      "name": "yss-mail",
-      "description": "Use when 用于 YSS mail starter、邮件发送、邮件配置、SMTP 集成和邮件发送失败排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
-      "directory": "yss-mapper-dynamic",
-      "name": "yss-mapper-dynamic",
-      "description": "Use when 用于 YSS mapper-dynamic 组件、动态 Mapper、动态 SQL 映射和 Mapper 生成/加载排障。",
       "files": [
         "SKILL.md",
         "agents/openai.yaml",
@@ -492,16 +432,6 @@
       ]
     },
     {
-      "directory": "yss-quality",
-      "name": "yss-quality",
-      "description": "Use when 用于 YSS quality starter、质量任务 Feign、任务执行详情、质量任务查询、YssCloudQualityFeign 和质量组件接入排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
       "directory": "yss-repository",
       "name": "yss-repository",
       "description": "用于生成或重构 YSS Repository 持久层与 Domain Gateway 实现。当用户要求按表结构、DDL、metadata 或现有领域模型补齐 PO、Repository、Convertor、GatewayImpl 时调用。",
@@ -553,26 +483,6 @@
         "references/source-location.md",
         "references/source-map-config.md",
         "scripts/refresh-yss-skill-index.py"
-      ]
-    },
-    {
-      "directory": "yss-sql-condition",
-      "name": "yss-sql-condition",
-      "description": "Use when 用于 YSS SQL condition 组件、SqlTranspiler、CaseWhenSqlGenerator、SqlTemplateRenderer、SqlValidator、动态 SQL 条件生成和 SQL 校验排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
-      ]
-    },
-    {
-      "directory": "yss-sql-tpl",
-      "name": "yss-sql-tpl",
-      "description": "Use when 用于 YSS SQL 模板管理、EnableSqlTplManage、SqlTplConfig、SqlTplResource、SQL 模板 Repository/Gateway/Feign 接入和排障。",
-      "files": [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/source-index.md"
       ]
     },
     {
@@ -988,9 +898,6 @@
     "yss-dictionary/SKILL.md": "348998ea0137043ad570e7391c183930b3e90f7fb0f71551a6a1f3271fc0841c",
     "yss-dictionary/agents/openai.yaml": "250436c5c8fceeddf9a261d46914eae1f0fe9b776485a9b4dad18e9dec2c4479",
     "yss-dictionary/references/source-index.md": "23d0258dae981ab772541a71d80379d555db5fd2b78fa3167ed12a16127cea28",
-    "yss-dir/SKILL.md": "d1bdbe4b2679cc40bcdb11e346104ea5af15b4dc0bcf9394365ca63d5b2a8b5c",
-    "yss-dir/agents/openai.yaml": "6be9162ce3787e444a3041fede13ad2e2057cbb8b89447f6f30ccd21bdecb44a",
-    "yss-dir/references/source-index.md": "0b227c043973b0de8f222330fe074ff0e0e22b26c6bb871254aec109e3eaf83d",
     "yss-distributed-id/SKILL.md": "7f71ae093acdd34f9cb0035783653d63eb6e419e8126cbe7a5fe5fbf4975b94a",
     "yss-distributed-id/agents/openai.yaml": "93c11a454e7cb3c5118d4fdeaff9b7def2585c93baf7b84dce08a718b72d6a69",
     "yss-distributed-id/assets/AutoIdInterceptor.java": "7b0c22dce3623863b75dacaca1227b4277a2416ee6ed5e6a3baf8c6c0a1df7d7",
@@ -1014,9 +921,6 @@
     "yss-dto/assets/Result.java": "9ae6b91465152a65eed91545f3afc5acb4a54ad5f9b0fbc8f273d32590fd615f",
     "yss-dto/references/README.md": "3a90aea1a0b32316042f7ce7a35e7c66417b7df6c487067f5d5eb0cb891878a9",
     "yss-dto/references/source-index.md": "54d91e878148a7dcd965b095d7c866bb11cbea8840c6665912f82e86bfb4fd3c",
-    "yss-duckdb/SKILL.md": "2e10889db21f38d0b0163b169f41d388f308d764dea1ce9c95bde37753ff1672",
-    "yss-duckdb/agents/openai.yaml": "b16026baa0d07eb8dfec8d4398dc22de70e466f6f10fb782db55bd439650c115",
-    "yss-duckdb/references/source-index.md": "d77a9684d1d7809938a742317eb3d29121d0a2f42000de3e3790179647953430",
     "yss-excel-mvc/SKILL.md": "55b268e894f51b385d228fe07d51b2c523b09ddcbbddceeff839d4641ff6032c",
     "yss-excel-mvc/agents/openai.yaml": "30338140e21ce0af70e821597533d2c2230bb085575f13f485ce7b2666dc9ce5",
     "yss-excel-mvc/assets/ExcelDynamicData.java": "15c6aefc8a17ca06aa4b9fac5ff6e0a1688c93da8fc12be60a89c5f577c5f0f9",
@@ -1029,12 +933,6 @@
     "yss-exception/SKILL.md": "bf52a6c2efcde6aad3f932df4169c068d82f99f08391d5276858166011132920",
     "yss-exception/agents/openai.yaml": "fc2092e945762aff8d05fea253ea12d5cff725f77fcf61348ba852c67c21fc1b",
     "yss-exception/references/source-index.md": "d673893e0194cc469dc3d54b3e0dd88e7dd56e7c1c23332351794f9cafc21c53",
-    "yss-file/SKILL.md": "82320c240d4f2e4428cdb176eeffbbad9c54208a79dc5c321f920f0ca0c070a3",
-    "yss-file/agents/openai.yaml": "6ff3580def96dc990278855ca28631bf295c49f04dc7a89e52394de4bf17d422",
-    "yss-file/references/source-index.md": "d9ea182e4c0438925976bf0573a27ab6755635e3601bf196242470bec8567934",
-    "yss-filerunner/SKILL.md": "4c1bcd97af43d2776d3f21104fb640717165e019e169b52970d2d5273f419fc8",
-    "yss-filerunner/agents/openai.yaml": "5f7d9908a06d104302c18e9a782b7e8ac861d9145d107bfe548fcbf9c914d284",
-    "yss-filerunner/references/source-index.md": "3a59a89b6399bc564c76cdc811ac225aae27520a3081a9a994c707960b60b70d",
     "yss-formily-schema-generator/SKILL.md": "3f383a052a6bbac4276e2dcdaa76f477c87297ac5891f1203bda6c8b75647898",
     "yss-formily-schema-generator/agents/openai.yaml": "4ae7282982ab1544128ac9323b766ccd6f603a7541acf4aedc8eebf895f48b67",
     "yss-formily-schema-generator/assets/java-sdk/ExampleUsage.java": "6dcc66ccacb99cbf5de51e138c141f6dbec2c121a01ffd55f7f2294537055c23",
@@ -1058,12 +956,6 @@
     "yss-log/SKILL.md": "e659aad5763ce336b9f495b3bdb649adf420392c7690b0cf2241cf5237189a85",
     "yss-log/agents/openai.yaml": "f8841a81ca63bb8ad3a1c78e3493211aef794f58ea73a47e058b4279dea357dc",
     "yss-log/references/source-index.md": "302ab95f5254a42adb6106a078335016d3315c7a2ccf36000d0ffc3eb191c86e",
-    "yss-mail/SKILL.md": "56909904103b66a1b97320bbd5a7fddb3c26a75cca623917aeedaea3bfd78e2f",
-    "yss-mail/agents/openai.yaml": "3bda9d041aa5bfb181543dccb65b8c2952191e713c87cd326797686940e8d98d",
-    "yss-mail/references/source-index.md": "f48b2decb1b67b6a5cac1e3a7603ba7ea6b26304b08833384cab4d65683f0639",
-    "yss-mapper-dynamic/SKILL.md": "84c0fbcb6965943fc4ad27eb140cbe3adb7f2704da494041cae0ce0cc6fd8130",
-    "yss-mapper-dynamic/agents/openai.yaml": "af846b22ef711f23b27cd2d410ef0f2112bddf2aa15709e13243c5684d90de62",
-    "yss-mapper-dynamic/references/source-index.md": "a564c3cdf89afd9d4d81c98d64a4334d88a93b64ff2582ef717ca263bee50ecf",
     "yss-microapp-commit/SKILL.md": "013a1d81b92481eae83e165b2bec99ab4a4505ce44cdabc4464ca46cc6957fdd",
     "yss-microapp-commit/agents/openai.yaml": "b642b4243602c48f5754030e28c3479def3b00f1f9276d950b3e5f67c1f86f2c",
     "yss-microapp-commit/references/scope-mapping.md": "aa680442884390b562797efd03424314c7c209b0425e16a460e3cc9d53244671",
@@ -1102,9 +994,6 @@
     "yss-product-lifecycle/references/orchestration-contract.yaml": "3f8b07550854776d2747752e725a828fb2d765534782dedd2b494904fc92c1d9",
     "yss-product-lifecycle/references/orchestration.md": "bc17275b8483bc65ba181bf98844c785834b2a55eba2d03229aa6369acfe552b",
     "yss-product-lifecycle/references/state-model.md": "35dd52e2c8682ba199fa253ba6e7119f103d8027622a35a7c019e6df273772de",
-    "yss-quality/SKILL.md": "682157b43fe8de0a21e9cf92e665c57ac543283359f4c173c387781b5e6c585d",
-    "yss-quality/agents/openai.yaml": "61ee6a6f8a7bd396fa63614a010812814b1791d1b4e1832cdc2f14070a74d477",
-    "yss-quality/references/source-index.md": "2833cad7f62f576a92fcdaa8a8d318b07413260dea40cbccda97066291fb80fd",
     "yss-repository/SKILL.md": "98b0648b721afa07beae046441b2d8704ef25beb6a452780dca37adf447d3b14",
     "yss-repository/agents/openai.yaml": "b4eecafac905cfaae7c1a77ed87132aa15da0211c4f081398fb123d9ddc7a496",
     "yss-resilience4j/SKILL.md": "fd09700aa47f031a4c7ab7b5e9d49f2769605c3d605c3ab075e581b2ca968fc3",
@@ -1112,7 +1001,7 @@
     "yss-resilience4j/references/source-index.md": "7a7e0bc6d897430a78499c6f50fa173103d66dfc47dde101f7d1538550b846c3",
     "yss-router/SKILL.md": "4ab8d1b2f111b50a46854334624525594ec34cad06fdb1155240c8a962d47040",
     "yss-router/agents/openai.yaml": "695648fc2d25994037f7fb79845c2b58b4a4f79ca438b36854926b0b8a6adbd8",
-    "yss-router/references/boundaries.md": "0274533482e63c613b281ade556d9fa93a3f3af1c7c341ec7a215bf97aef0e5a",
+    "yss-router/references/boundaries.md": "4c822f322feab02fd6ad69dd4e73c3db6de5838a9049769ae88d3f4dad0f0614",
     "yss-router/references/router-contract.yaml": "77d2908c12bd95caddeea14e6eb06e0268b547a1d022deadeaed284cedfbbdcc",
     "yss-router/references/slice-implementation-contract.md": "2ee5f912e6b28fe77110dfddd48394d0f4204aaa5923637c43b0ee35fc501c28",
     "yss-router/references/yss-skill-execution-result.md": "15c6cb13e952d2e24227e2b052633bd0e68f43bac5b787eac39b76d5ac413825",
@@ -1122,14 +1011,8 @@
     "yss-source-index/SKILL.md": "36809799578568990b66ce41b398e70d424b431503a81f8d9a63ab2ec17ea505",
     "yss-source-index/agents/openai.yaml": "9fa6ca778a9a6b1a58ae8375d0d6b9a5ca4936a4cf54dfb73c1124429a055478",
     "yss-source-index/references/source-location.md": "784be347e78a85d4a03a2927aa419bd68638f1d14093652d772be56013a193bb",
-    "yss-source-index/references/source-map-config.md": "8b584c219e5ee92345f1321e29eea1fc398fa8ffe635c616cfdd6017bd3052d4",
-    "yss-source-index/scripts/refresh-yss-skill-index.py": "7e4e59ca884831797c15ad257488018b6cce92e4660a9b5e49c85e22c764140c",
-    "yss-sql-condition/SKILL.md": "7d49b93b20a4a32f481a6afdfbc71aa2ac46dad3a854a6f69278f8862e81843b",
-    "yss-sql-condition/agents/openai.yaml": "f8f90166ec7f5ad85435dc3d4097abe304cd1c592ff05c75cccfaf19c3b6760f",
-    "yss-sql-condition/references/source-index.md": "c1387209b71b1fd261aa989b5f9f147eae09fafb0ae2a1c741deb57bdf7a07e9",
-    "yss-sql-tpl/SKILL.md": "d566ac428b926b518c915d04b7be33e830fa2c80713c9cf7d7945967ef828cc0",
-    "yss-sql-tpl/agents/openai.yaml": "e0f6bf6b0996bdc5344eaee2c7ebbef1935be6671402461f87c23e617383d16b",
-    "yss-sql-tpl/references/source-index.md": "24264cf03fefae473679edab14133db93c2598aeb3a272f72dd2587e3bfca88b",
+    "yss-source-index/references/source-map-config.md": "ea4bba6cc749a0925409987642ac970df19724e5de4fa46c56ca1273b8bde643",
+    "yss-source-index/scripts/refresh-yss-skill-index.py": "bc56235a2788347d550a7e2b4a7d603733672911102cd01e762a2d6f202198be",
     "yss-taskflow/SKILL.md": "4903d238bc81d07d77bd3af5f05c9444ac915e291dbfcef7af8a7c1611404291",
     "yss-taskflow/agents/openai.yaml": "1ad6f5693513158dbe929294bf7b1a4ffc43fe5201ec46135aae0dc2e6d5b5a4",
     "yss-taskflow/references/source-index.md": "69f0d4e33623a0a39fe40fc1c67f9cd653fb47cec4b4e030da5995a2f8147218",
@@ -1343,7 +1226,7 @@
     "yss-validation/SKILL.md": "001ef8353137a3c824af5afb330488729fdee8a1f4a9db188252682899cb8382",
     "yss-validation/agents/openai.yaml": "593a8973ea54465cfb6388ae81b5474dd66d3bd796dce43f76fcaa8d7e7e05e7",
     "yss-validation/references/source-index.md": "62838d759c1e9a2e6f328a8bd99bd5a810149c0cce17868091fb8bb967ee66b5",
-    "yss-valuation/SKILL.md": "adafc301cfdb37e1011759050c5c409b0ac7c6af292c92e7fbaf4cb68b4af8b8",
+    "yss-valuation/SKILL.md": "c26119538366356135d6a59df063d30471522c2306c6cc3a9303a0e72dc9e203",
     "yss-valuation/agents/openai.yaml": "ba02de84f264efd10c06bf6cd1596cf85cec30d5791cdc0b40ab578acdc8f310",
     "yss-valuation/references/source-index.md": "902ff0611d21b1f9ecdf197f8fcf4726042d61ddb386791b3c48d107d4ed9728",
     "yss-variable/SKILL.md": "53d6a7a0654d09f3b65c9d5c69d92131b75b3fb15cd35470f5f59dc65347d396",
