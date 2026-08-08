@@ -1,1 +1,10 @@
----name: yss-backend-scaffold-web-referencedescription: Use when the YSS DDD scaffold workflow reaches Web-layer implementation and needs the shared Web skill.---> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。# Web Layer Reference**REQUIRED SUB-SKILL:** Use `yss-backend-scaffold-web` as the single authoritative Web-layer implementation guide. Do not maintain a second copy under the scaffold generator.
+---
+name: yss-backend-scaffold-web-reference
+description: Use when the YSS DDD scaffold workflow reaches Web-layer implementation and needs the shared Web skill.
+---
+
+> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+
+# Web Layer Reference
+
+**REQUIRED SUB-SKILL:** Use `yss-backend-scaffold-web` as the single authoritative Web-layer implementation guide. Do not maintain a second copy under the scaffold generator.

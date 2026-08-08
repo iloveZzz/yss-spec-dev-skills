@@ -1,1 +1,4 @@
-# Database Driverspymysql>=1.0.0psycopg2-binary>=2.9.0oracledb>=1.0.0
+# Database Drivers
+pymysql>=1.0.0
+psycopg2-binary>=2.9.0
+oracledb>=1.0.0
