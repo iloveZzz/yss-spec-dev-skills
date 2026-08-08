@@ -1,0 +1,97 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "生命周期",
+      "description": "用于 YSS 产品生命周期、路由和跨仓库协作的技能。",
+      "skills": [
+        "yss-domain-modeling",
+        "microapp-commit",
+        "yss-product-lifecycle",
+        "yss-router",
+        "yss-source-index"
+      ]
+    },
+    {
+      "title": "后端",
+      "description": "用于 YSS Java、DDD、数据访问和服务端契约实现的技能。",
+      "skills": [
+        "yss-backend-scaffold-application",
+        "yss-backend-scaffold-domain",
+        "yss-backend-scaffold-infrastructure",
+        "yss-backend-scaffold-web",
+        "yss-db2mybatis",
+        "yss-ddd-scaffold-generator",
+        "yss-domain",
+        "yss-dto",
+        "yss-jdbc",
+        "yss-mapper-dynamic",
+        "yss-mybatis",
+        "yss-repository",
+        "yss-sql-condition",
+        "yss-sql-tpl"
+      ]
+    },
+    {
+      "title": "前端",
+      "description": "用于 YSS Vue、Formily、页面模块和 UI 实现的技能。",
+      "skills": [
+        "yss-components",
+        "yss-design-system",
+        "yss-formily",
+        "yss-formily-schema-generator",
+        "yss-frontend-scaffold-generator",
+        "yss-hook",
+        "yss-page-module-development",
+        "yss-ui",
+        "yss-use-table-height",
+        "yss-use-tree-height",
+        "yss-web-controller"
+      ]
+    },
+    {
+      "title": "OpenAPI",
+      "description": "用于 YSS API 设计、审查、治理和生成集成的技能。",
+      "skills": [
+        "api-integration",
+        "yss-openapi",
+        "yss-openapi-draft-review",
+        "yss-openapi-governance"
+      ]
+    },
+    {
+      "title": "基础组件",
+      "description": "用于 YSS 缓存、基础设施、文件、日志和通用组件接入的技能。",
+      "skills": [
+        "yss-cache",
+        "yss-dictionary",
+        "yss-dir",
+        "yss-distributed-id",
+        "yss-duckdb",
+        "yss-excel-mvc",
+        "yss-exception",
+        "yss-file",
+        "yss-filerunner",
+        "yss-log",
+        "yss-mail",
+        "yss-resilience4j",
+        "yss-security-algorithm",
+        "yss-taskflow",
+        "yss-up-springboot3",
+        "yss-userinfo",
+        "yss-validation",
+        "yss-valuation",
+        "yss-variable"
+      ]
+    },
+    {
+      "title": "质量治理",
+      "description": "用于审计、质量门禁和工程治理的技能。",
+      "skills": [
+        "yss-audit-log",
+        "yss-quality"
+      ]
+    }
+  ]
+}

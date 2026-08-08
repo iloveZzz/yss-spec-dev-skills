@@ -1,0 +1,106 @@
+name: Verify skills
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Discover skills with the official CLI
+        run: DISABLE_TELEMETRY=1 npx --yes skills add . --list
+
+      - name: Validate public manifest and skill frontmatter
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const config = JSON.parse(fs.readFileSync('skills.sh.json', 'utf8'));
+          if (!Array.isArray(config.groupings) || config.groupings.length < 1) {
+            throw new Error('skills.sh.json must contain groupings');
+          }
+
+          const skillDirs = fs.readdirSync('skills', { withFileTypes: true })
+            .filter((entry) => entry.isDirectory())
+            .map((entry) => entry.name);
+          const skillNames = new Set();
+
+          for (const forbidden of ['AGENTS.md', 'CONTEXT.md', 'docs', 'skills-lock.json', '.agents', '.claude', '.codex', '.hermes', '.pi', '.qoder', '.trae']) {
+            if (fs.existsSync(forbidden)) throw new Error(`forbidden project asset: ${forbidden}`);
+          }
+
+          const manifest = JSON.parse(fs.readFileSync('.yss-export-manifest.json', 'utf8'));
+          if (manifest.format_version !== 1 || !Array.isArray(manifest.skills) || manifest.skills.length !== skillDirs.length) {
+            throw new Error('invalid .yss-export-manifest.json');
+          }
+
+          function assertNoSymlinks(directory) {
+            for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+              const file = path.join(directory, entry.name);
+              if (fs.lstatSync(file).isSymbolicLink()) throw new Error(`symbolic link is not allowed: ${file}`);
+              if (entry.isDirectory()) assertNoSymlinks(file);
+            }
+          }
+          assertNoSymlinks('skills');
+
+          for (const dir of skillDirs) {
+            const file = path.join('skills', dir, 'SKILL.md');
+            if (!fs.existsSync(file)) throw new Error(`missing ${file}`);
+            const body = fs.readFileSync(file, 'utf8');
+            if (!/^---\s*\n/m.test(body) || !/\n---\s*(?:\n|$)/m.test(body)) {
+              throw new Error(`invalid frontmatter: ${file}`);
+            }
+            const name = body.match(/^name:\s*(.+)$/m)?.[1].trim().replace(/^['"]|['"]$/g, '');
+            const description = body.match(/^description:\s*(.+)$/m)?.[1].trim();
+            if (!name || !description) throw new Error(`missing name/description: ${file}`);
+            const normalized = name.toLowerCase().replace(/[\s_]+/g, '-');
+            if (skillNames.has(normalized)) throw new Error(`duplicate skill name: ${name}`);
+            skillNames.add(normalized);
+          }
+
+          const grouped = new Set();
+          for (const group of config.groupings) {
+            if (!group.title || !group.description || !Array.isArray(group.skills) || group.skills.length === 0) {
+              throw new Error('invalid skill grouping');
+            }
+            for (const name of group.skills) {
+              const normalized = name.toLowerCase().replace(/[\s_]+/g, '-');
+              if (!skillNames.has(normalized)) throw new Error(`unknown grouped skill: ${name}`);
+              if (grouped.has(normalized)) throw new Error(`skill appears in multiple groups: ${name}`);
+              grouped.add(normalized);
+            }
+          }
+          if (grouped.size !== skillNames.size) throw new Error('not every discovered skill is grouped');
+
+          const suspicious = /-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----|(?:ghp_|github_pat_|github_token_|xox[baprs]-)[A-Za-z0-9_-]+|AKIA[0-9A-Z]{16}|(?:^|[^.\w])\/(?:Users|home|private|tmp)\//;
+          function scanText(directory) {
+            for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+              const file = path.join(directory, entry.name);
+              if (entry.isDirectory()) {
+                scanText(file);
+                continue;
+              }
+              const body = fs.readFileSync(file);
+              if (!body.includes(0) && suspicious.test(body.toString('utf8'))) {
+                throw new Error(`suspicious content: ${file}`);
+              }
+            }
+          }
+          scanText('skills');
+          NODE
+
+      - name: Check whitespace
+        run: git diff --check

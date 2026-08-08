@@ -1,0 +1,1 @@
+# Database Driverspymysql>=1.0.0psycopg2-binary>=2.9.0oracledb>=1.0.0
