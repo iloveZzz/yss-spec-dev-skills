@@ -1,51 +1,48 @@
 ---
 name: yss-userinfo
-description: Use when YSS current-user context, `AuthUserInfoUtil`, propagated user headers, JWT user payloads, Redis user cache, or background-user fallback is involved.
+description: "接入或排查 YSS CurrentUserProvider、已认证 SecurityContext、受信网关头适配与后台用户上下文。"
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
 # yss-userinfo
 
-Use this skill for YSS 用户信息组件. Keep implementation grounded in the local project and resolvable YSS backend component source.
+处理已认证当前用户、受信网关适配、自定义 `CurrentUserProvider` 和后台空上下文；身份来源须符合当前平台契约。
 
-中文说明：本技能用于 YSS 用户信息组件。执行时优先读取源码索引，避免凭记忆猜类名、配置项或接入方式。
+## 源码定位
 
-## Source Index First
+按 [源码定位策略](references/shared/skills/yss-skill-source-index-refresh/references/source-location.md) 确认真实位置，再从 [平台索引](references/source-index.md) 定位当前任务需要的源码。`yss-microservice-components/yss-component-userinfo-starter` 仅是模块路径提示。
 
-- Backend source location is environment-specific; resolve it with `yss-source-index/references/source-location.md`.
-- Generated index: `references/source-index.md`
-- Component path hints: `yss-microservice-components/yss-component-userinfo-starter`
+## 工作流
 
-Read `references/source-index.md` as a path-hint index whenever the task depends on exact modules, annotations, auto configuration, properties, controllers, clients, repositories, DTOs, handlers, or troubleshooting.
+1. 先按当前路线已核验的精确平台线读取对应索引；以下当前行为针对 `boot3-java17`，Boot 2 旧工程只按其独立索引做只读分诊和迁移。
+2. 区分已认证当前用户、显式受信网关、自定义 `CurrentUserProvider` 与非 REST/后台 fallback。
+3. 按所选任务核验 `CurrentUserProvider`、对应 provider、兼容 facade `AuthUserInfoUtil` 及 `DmUser` / `DmUserDetails`，不无条件读取所有实现。
+4. 默认使用 `SecurityContextCurrentUserProvider`，只消费 Spring Security 已认证且非 anonymous 的 `Authentication`。JWT 的 signature、issuer、audience、expiry 与算法校验必须在资源服务器认证链完成。
+5. `AuthUserInfoUtil` 是由 `CurrentUserProvider` 驱动的兼容 facade；业务代码可继续调用 `userInfo()`、`userName()`、`userCode()` 或 `currentUserJson()`，但不得自行解析 Header、JWT payload 或 Redis 身份缓存。
+6. 只有显式启用 `yss.userinfo.trusted-gateway.enabled` 且配置非空 `trusted-proxies` 时，才启用 `TrustedGatewayHeaderCurrentUserProvider`；它只接受 remote address 在 allow-list 中的请求，并且 SecurityContext 结果优先。
+7. 定时/后台任务的 provider 为空时，兼容 facade 返回独立的 `system` fallback；它不是已认证 system principal。
 
-## Workflow
+## 平台行为核验
 
-1. Identify whether the task is current-user lookup, request header propagation, JWT parsing, Redis user cache lookup, or non-REST/background fallback behavior.
-2. Read `references/source-index.md`, then inspect `AuthUserInfoUtil`, `DmUser`, and `DmUserDetails`.
-3. Prefer `AuthUserInfoUtil.userInfo()`, `userName()`, `userCode()`, or `currentUserJson()` over manually parsing headers in business code, but treat the result as propagated context, not as JWT signature verification.
-4. Check lookup order before debugging: `X-Username`/`X-Usercode`/`X-LoginDisplayName` headers, Bearer JWT payload, then Redis cache via `CacheManagerCompose`.
-5. For scheduled/background tasks, expect fallback behavior such as default `system` user unless the caller explicitly provides context.
+- `SecurityContextCurrentUserProvider` 支持 `UserInfo` principal 与已认证的 `OAuth2AuthenticatedPrincipal`；claim 映射在认证后进行。
+- 受信网关 Header 为 `X-Username`、`X-Usercode` 和 `X-LoginDisplayName`；适配器要求可信代理 allow-list 与非空 username。
+- `UserInfoAutoConfiguration` 默认使用 SecurityContext，再组合可选网关 provider；工程自定义 `CurrentUserProvider` 是显式扩展 seam。
+- Boot 3 不解析未验证 Bearer payload，不以 Redis 作为认证 fallback；缓存行为不属于此身份 provider 合同。
 
-## Source-Backed Notes
+## 验收
 
-- Header names include `X-Username`, `X-Usercode`, and `X-LoginDisplayName`.
-- Bearer token parsing reads payload fields such as `sub`, `loginDisplayName`, `email`, and `userCode` without verifying signature/issuer/audience/expiry in this utility. Authentication decisions must use a verified security context.
-- The current source has a known reversed `userCode` header assignment condition; do not claim that header path is reliable until fixed and tested.
-- Redis cache lookup uses the JWT user-info cache key path; load `yss-cache` if changing cache behavior.
+- 核验所需依赖或 starter 已进入实际工程。
+- 使用 Servlet Header 前核验 request context 存在。
+- Provider 读取 principal 前，Spring Security 已完成请求认证。
+- 受信网关启用时，至少一个代理地址进入 allow-list，且拒绝不可信 remote address。
+- 业务代码不重复 JWT 或 Header 解析。
+- 测试覆盖 SecurityContext/网关/后台的优先级与空结果，区分 `system` fallback 和已认证 system 用户。
+- REST 与异步/后台执行分别验证用户信息传播。
 
-## Checklist
+## 修改边界
 
-- Required dependency or starter module is present.
-- Request context exists before relying on servlet headers.
-- Gateway/auth service forwards expected user headers or Authorization token.
-- Cache fallback is checked when headers exist but detailed user info is incomplete.
-- Business code does not duplicate JWT parsing logic.
-- Header/JWT/cache/background precedence and overwrite behavior are covered by tests; `system` fallback is distinguished from an authenticated system user.
-- User info propagation is tested for REST calls and async/background execution separately.
-
-## Do Not
-
-- Do not invent class names or configuration keys without checking the source index.
-- Do not replace component extension points with business-local framework code.
-- Do not broaden the task into unrelated YSS components unless the user asks.
+- 类名和配置 key 先核验当前索引与源码，不凭记忆补造。
+- 使用组件已有扩展 seam，不以业务本地框架代码替换。
+- 原始 `Authorization` payload 与网关 Header 不能直接作为已认证身份。
+- 保持当前组件任务范围；扩展到其他组件须有用户要求或重新路由依据。

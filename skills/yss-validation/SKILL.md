@@ -1,58 +1,48 @@
 ---
 name: yss-validation
-description: Use when YSS Bean Validation/JSR-303 dependencies, validation messages, LiteFlow EL parsing, `ExpressParserFactory`, parser registration, or validation-error mapping is involved.
+description: "接入或排查 YSS Bean Validation、校验消息与校验错误映射。"
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
 # yss-validation
 
-Use this skill for YSS 校验组件. Keep implementation grounded in the local project and resolvable YSS backend component source.
+处理 YSS Bean Validation 注解、消息资源和校验失败映射；先区分 DTO 校验与当前不可用的历史 EL/parser 请求。
 
-中文说明：本技能用于 YSS 校验组件。执行时优先读取源码索引，避免凭记忆猜类名、配置项或接入方式。
+## 源码定位
 
-## Source Index First
+按 [源码定位策略](references/shared/skills/yss-skill-source-index-refresh/references/source-location.md) 确认真实位置，再从 [平台索引](references/source-index.md) 定位当前任务需要的源码。`yss-microservice-components/yss-component-validation-jsr303` 仅是模块路径提示。
 
-- Backend source location is environment-specific; resolve it with `yss-source-index/references/source-location.md`.
-- Generated index: `references/source-index.md`
-- Component path hints: `yss-microservice-components/yss-component-validation-engine-parent`, `yss-microservice-components/yss-component-validation-jsr303`
+## 工作流
 
-Read `references/source-index.md` as a path-hint index whenever the task depends on exact modules, annotations, auto configuration, properties, controllers, clients, repositories, DTOs, handlers, or troubleshooting.
+1. 区分 JSR-303 注解校验与表达式/EL parser 请求。
+2. 从当前路线已核验平台的索引核验实际 POM、校验消息资源、消费 Controller 注解及匹配的异常 Advice。当前模块 README 为空，不作为前置证据。
+3. 当前组件仓不存在历史 `yss-component-validation-engine-parent`；表达式、LiteFlow EL 或 `ExpressParserFactory` 请求返回 `blocked`，先确认真实组件来源和生命周期影响，不以旧索引或通用知识生成实现。
+4. 校验失败映射保持当前工程的 service/API 错误合同。
+5. 消费工程基线选择 javax/jakarta，不自行升级 Java/Boot。MVC 输入校验放在 server/client，业务不变量由 service/core 验证；不生成 DDD Domain。HTTP 失败形态由 server 的合同测试验证。
 
-## Workflow
+## 能力边界
 
-1. Identify whether the task is JSR-303 annotation validation, validation engine expression parsing, LiteFlow EL parsing, or parser extension.
-2. Read `references/source-index.md`; for JSR-303 behavior, read `yss-component-validation-jsr303/readme.md` first.
-3. For expression parsing, inspect `ExpressParserFactory` and concrete `ExpressParser` implementations before adding syntax.
-4. Register new parsers as Spring beans; `ExpressParserFactory` auto-registers available parser beans by `parserType().getType()`.
-5. Keep validation failures mapped to the service/API error contract used by the local project.
+- `validation-jsr303` 当前聚合依赖与消息资源，没有本地 Validator、Advice 或自动配置 Java 实现。
+- 历史 `validation-el-parser` / `ExpressParserFactory`：当前源码根不存在，状态为 `blocked`，不得作为可用 capability。
 
-## Capability Split
+## 排障
 
-- `validation-jsr303`: currently a dependency/message-resource aggregation module; it has no local Validator, Advice, or auto-configuration Java implementation.
-- `validation-el-parser`: LiteFlow/EL expression parser infrastructure.
-- `ExpressParserFactory`: central parser registry backed by a concurrent map.
-- Parser extension point: implement/provide `ExpressParser` with a non-null parser type and register it as a bean.
+- EL/parser 请求停止实施并确认真实仓库/模块，不假设已移除路径仍存在。
+- 注解未生效时先检查 Controller/service 校验注解和 Spring validation starter 装配，不先改 parser 代码。
+- 当前证据使用 POM、消息资源、Controller 注解和 `GlobalExceptionAdvice`。
+- 表达式校验与 DTO 校验行为不一致时先确认对应模块，再路由问题。
 
-## Troubleshooting Notes
+## 验收
 
-- If a parser is not found, confirm it is a Spring bean and `parserType()` is non-null.
-- If validation annotations do not fire, check controller/service validation annotations and Spring validation starter wiring before editing parser code.
-- The component README is empty; use the POM, message resources, Controller annotations, and `GlobalExceptionAdvice` as current evidence.
-- Duplicate parser type keys are silently overwritten by `PARSER_MAP.put`; require collision and round-trip tests for extensions.
-- If behavior differs between expression validation and DTO validation, route the problem to the correct submodule first.
+- 核验所需依赖或 starter 已进入实际工程。
+- JSR-303 与不可用的表达式校验不混入同一整改。
+- 不将类、parser 或配置归给不存在的历史模块。
+- 校验错误保留中文业务用户可理解的消息。
+- 新增包装前先复用工程既有约定。
 
-## Checklist
+## 修改边界
 
-- Required dependency or starter module is present.
-- JSR-303 and expression validation concerns are not mixed in the same fix.
-- New parser implementations have deterministic parser type keys.
-- Parser registration is verified through `ExpressParserFactory.PARSER_MAP`.
-- Validation errors preserve readable messages for Chinese business users.
-- Existing project conventions are reused before adding new wrappers.
-
-## Do Not
-
-- Do not invent class names or configuration keys without checking the source index.
-- Do not replace component extension points with business-local framework code.
-- Do not broaden the task into unrelated YSS components unless the user asks.
+- 类名和配置 key 先核验当前索引与源码，不凭记忆补造。
+- 使用组件已有扩展 seam，不以业务本地框架代码替换。
+- 保持当前组件任务范围；扩展到其他组件须有用户要求或重新路由依据。

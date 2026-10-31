@@ -1,79 +1,20 @@
 ---
 name: yss-web-controller
-description: Use when generating or refactoring YSS Web Adapter Controllers, request DTOs, response VOs, validation, result wrappers, or Web Convertors from frozen contracts and stable Application interfaces.
+description: 按当前 API 需求与用例接口实现或重构 YSS Controller、请求 DTO、响应 VO 和 Web Convertor。
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
-# yss-web-controller
+# YSS Web 适配
 
-这是一个 Web 适配层生成型 skill。优先复用脚本 `scripts/generate_controller.py` 和模板，不手写重复 CRUD。
+按当前 API 需求、既有接口约定和用例接口，由 Agent 直接实现 Controller、请求 DTO、响应 VO 与 Web Convertor。先读代码并增量修改，不要求生成脚本、metadata、冻结记录或正式合同。
 
-## 何时使用
+DDD 的 Web 调用 Application，MVC 的 Server 调用 Service；不把业务编排和数据库访问放进 Controller。DDD 细节参考 [Web 分层](references/web-adapter-layer-guide.md)，MVC 按 references/profiles 中的实际结构处理。
 
-- 用户要批量生成 Controller。
-- 用户要根据 metadata 或已有 Domain Gateway 生成 `AddCmd / UpdateCmd / PageQuery / VO / Controller / WebConvertor`。
-- 用户要求统一 Web Adapter 风格、返回值和接口路径。
+- HTTP 模型与 Domain Entity、持久化 PO 分离，字段、null、分页和响应包装参考 yss-dto 的 wire 约定。
+- 请求只暴露 API 允许字段，不将内部 PageQuery 协作字段开放为客户端输入。
+- 使用项目匹配的 javax/jakarta 校验注解，保留认证、授权、输入校验和错误脱敏。
+- 转换使用现有 MapStruct 约定与构造器注入，避免反射式通用复制；Lombok 按对象身份选择范围。
+- 认证回调、Cookie、下载和流式响应按协议需求实现，不强制套 CRUD 结构。
 
-## 不适用
-
-- 用户只是要新增一个手写复杂接口，不一定要用脚本。
-- 用户还没有稳定的领域模型或 metadata，先补 `yss-domain` 或 `yss-db2mybatis`。
-
-## 优先流程
-
-1. 先确认冻结 OpenAPI/no-impact record、Application Service 接口、metadata、基础包、模块名、领域 segment、domain/web 落盘目录。
-2. 涉及 DTO / VO / CMD / Query POJO 样板代码时，加载并遵守 `lombok`。
-3. 涉及 Domain / Application Result 到 VO / DTO 或 CMD / Query 到输入模型的转换时，加载并遵守 `mapstruct`。
-4. 运行 `scripts/generate_controller.py`。
-5. 生成后检查路径、命名、返回值包装、Application Service 引用、`@Valid`、Lombok 注解和 MapStruct WebConvertor 是否对齐项目。
-6. 对复杂接口做少量手工修正，不在 skill 中承诺自动覆盖全部业务逻辑。
-
-## 推荐命令
-
-```bash
-python3 scripts/generate_controller.py \
-  --metadata-file ./path/metadata.json \
-  --base-package com.yss.demo \
-  --module-name demo \
-  --domain-segment example \
-  --domain-project-dir ./path/demo-domain \
-  --web-project-dir ./path/demo-adapter/demo-web \
-  --application-service-package com.yss.demo.application.service \
-  --validation-namespace javax \
-  --force
-```
-
-## 输出预期
-
-- `client/dto/cmd/*AddCmd.java`
-- `client/dto/cmd/*UpdateCmd.java`
-- `client/dto/query/*PageQuery.java`
-- `client/vo/*VO.java`
-- `rest/*Controller.java`
-- `rest/convertor/*WebConvertor.java`
-
-## 约束
-
-- 生成代码默认依赖既有 Application Service。只有批准合同明确标记的纯查询 CQRS 工作单元才允许直接读 Gateway；写操作禁止绕过 Application。
-- 返回结构保持项目既有 `SingleResult`、`PageResult`、`MultiResult` 体系。
-- DTO / VO / CMD / Query 默认用 Lombok 处理 getter/setter、constructor、builder 和日志样板；不要在 Controller 内部类或非约定包临时定义主要 DTO / VO。
-- `WebConvertor` 默认使用 MapStruct；禁止在 Controller / Application 中大段手写字段赋值、使用 `BeanUtils.copyProperties` 或反射式通用拷贝，除非有受控例外和测试证据。
-- 先跑脚本，再按项目规范做少量手调。
-- `javax` / `jakarta` validation namespace 必须来自工程基线，不得按记忆选择。
-- 若用户只是要改单个 Controller，先看现有代码，不要盲覆盖整个目录。
-
-## 按需读取
-
-- 生成脚本：`scripts/generate_controller.py`
-- Controller 模板：`assets/templates/Controller.java.template`
-- Convertor 模板：`assets/templates/WebConvertor.java.template`
-- POJO 样板代码：`lombok`
-- 对象转换：`mapstruct`
-
-## 阶段 7 合同
-
-- 只消费已批准合同和冻结 OpenAPI/no-impact record；不得用 Controller 或半成品 backend 反向定义产品契约。
-- DTO/VO/WebConvertor 机械骨架可用 `controlled-generation`；权限、错误映射、校验语义和接口行为必须使用 `behavior-tdd`。
-- 写入必须位于合同 `allowed_write_paths`，并提供 Controller、DTO/VO、WebConvertor、契约/API 测试和实际验证结果。
-- 按统一 `YSS Skill Execution Result` 返回偏离与新增影响；出现新 API/schema、权限或响应包装变化时暂停并回到 Router/生命周期。
+需要 CRUD 时参考 [直接实现说明](references/crud-generation.md)。测试与构建按实际任务选择，交付说明接口变化和已知兼容性影响。

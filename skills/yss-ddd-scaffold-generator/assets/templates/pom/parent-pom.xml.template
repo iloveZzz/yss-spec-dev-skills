@@ -3,22 +3,33 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.yss.datamiddle</groupId>
-        <artifactId>yss-datamiddle-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <groupId>{{parent_group_id}}</groupId>
+        <artifactId>{{parent_artifact_id}}</artifactId>
+        <version>{{parent_version}}</version>
         <relativePath />
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>{{group_id}}</groupId>
     <artifactId>{{project_name}}-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>{{project_version}}</version>
     <packaging>pom</packaging>
 
     <name>{{project_name}}-parent</name>
     <description>{{project_description}}</description>
 
     <properties>
-        <yss-components.version>2.0.0-SNAPSHOT</yss-components.version>
+        <yss-components.version>{{yss_components_version}}</yss-components.version>
+        <java.version>{{java_version}}</java.version>
+        <spring-boot.version>{{boot_version}}</spring-boot.version>
+        <maven.compiler.source>{{java_version}}</maven.compiler.source>
+        <maven.compiler.target>{{java_version}}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mapstruct.version>{{mapstruct_version}}</mapstruct.version>
+        <lombok.version>{{lombok_version}}</lombok.version>
+        <lombok-mapstruct-binding.version>{{lombok_mapstruct_binding_version}}</lombok-mapstruct-binding.version>
+        <swagger-annotations-v3.version>{{swagger_version}}</swagger-annotations-v3.version>
+        <maven-compiler-plugin.version>{{compiler_version}}</maven-compiler-plugin.version>
     </properties>
 
     <modules>
@@ -31,6 +42,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-dependencies</artifactId><version>{{boot_version}}</version><type>pom</type><scope>import</scope></dependency>
             <dependency>
                 <groupId>com.yss.cloud</groupId>
                 <artifactId>yss-components-bom</artifactId>
@@ -38,39 +50,24 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.yss.cloud</groupId>
-                <artifactId>yss-component-excel-mvc</artifactId>
-                <version>${yss-components.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yss.cloud</groupId>
-                <artifactId>yss-component-distributed-id</artifactId>
-                <version>${yss-components.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yss.cloud</groupId>
-                <artifactId>yss-component-spring-cache</artifactId>
-                <version>${yss-components.version}</version>
-            </dependency>
 
             <dependency>
-                <groupId>com.yss.datamiddle</groupId>
+                <groupId>{{group_id}}</groupId>
                 <artifactId>{{project_name}}-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yss.datamiddle</groupId>
+                <groupId>{{group_id}}</groupId>
                 <artifactId>{{project_name}}-application</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yss.datamiddle</groupId>
+                <groupId>{{group_id}}</groupId>
                 <artifactId>{{project_name}}-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yss.datamiddle</groupId>
+                <groupId>{{group_id}}</groupId>
                 <artifactId>{{project_name}}-web</artifactId>
                 <version>${project.version}</version>
             </dependency> {{db_dependency}} </dependencies>
@@ -78,6 +75,32 @@
 
     <build>
         <plugins>
+            <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId><version>{{boot_version}}</version><configuration><skip>true</skip></configuration></plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <parameters>true</parameters>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

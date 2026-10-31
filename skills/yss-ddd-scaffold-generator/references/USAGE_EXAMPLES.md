@@ -1,431 +1,105 @@
 # 使用示例
 
-## 1. 快速开始
+新合同是服务级工程基线，使用统一 Project Scaffold Contract schema v5（历史 v4 保留空工程语义） 与 `scaffold_request_id`。以下仅展示身份、Profile 和生成策略片段；实际平台、Maven 坐标、设计与批准绑定必须来自当前已批准输入，示例值不能作为生成授权：
 
-### 1.1 生成基础项目
+```json
+{
+  "schema_version": 4,
+  "kind": "project-scaffold-contract",
+  "delivery_role": "backend",
+  "scaffold_kind": "backend-ddd",
+  "repository_scope": "external-repository",
+  "init_git": false,
+  "scaffold_request_id": "scaffold-metadata-service-1",
+  "project_name": "metadata-service",
+  "target_output_dir": "/path/to/implementation-repo",
+  "base_package": "com.yss.metadata",
+  "architecture_family": "domain-driven",
+  "architecture_profile": "target-domain-model",
+  "generator_skill": "yss-ddd-scaffold-generator",
+  "decision_ref": "scaffold-architecture-decisions.yaml",
+  "decision_id": "architecture-metadata-service",
+  "decision_digest": "sha256:<digest>",
+  "maven_coordinates": {
+    "group_id": "com.yss.datamiddle",
+    "project_version": "1.0.0-SNAPSHOT",
+    "parent": {
+      "group_id": "com.yss.datamiddle",
+      "artifact_id": "yss-datamiddle-parent",
+      "version": "2.0.0-SNAPSHOT"
+    },
+    "yss_components_version": "2.0.0-SNAPSHOT"
+  },
+  "profiles": {
+    "architecture": "target-domain-model",
+    "persistence": "mybatis-plus",
+    "verification_database": "h2",
+    "production_database": "not-bound",
+    "platform": "<approved-platform-profile>",
+    "validation_namespace": "<resolved-platform-namespace>",
+    "dto_placement": "web",
+    "repository": "yss-internal"
+  },
+  "module_profile": {
+    "resolution_version": 1,
+    "requested_capabilities": [],
+    "resolved_modules": ["domain", "application", "infrastructure", "adapter", "bootstrap"]
+  },
+  "generation_policy": {
+    "mode": "initialize-only",
+    "existing_target": "unsupported",
+    "old_project_migration": "unsupported",
+    "template_upgrade": "unsupported"
+  }
+}
+```
+
+
+## 2. 一键生成并验证
+
+该入口依次生成工程并在项目根实际执行：
 
 ```bash
-# 进入脚手架目录
-cd yss-datamiddle-scaffold
-
-# 生成项目
-python3 ../../yss-ddd-scaffold-generator/scripts/generate_scaffold.py \
-  --project-name user-service \
-  --base-package com.yss.user \
-  --output-dir ./path/to/implementation-repo \
-  --database mysql
+./mvnw validate
+./mvnw test
+./mvnw package
 ```
 
-### 1.2 生成的项目结构
+执行前按 [Maven settings 规则](engineering-checks.md) 参考用户 `~/.m2/settings.xml` 或显式文件路径；可通过 `YSS_MAVEN_SETTINGS=/path/to/settings.xml` 传给工作流。缺少可用配置时先获取用户的文件路径或必要仓库信息；仅采用项目环境模板时才必须由安全环境提供 `YSS_MAVEN_REPOSITORY_URL`、`MAVEN_REPO_USERNAME`、`MAVEN_REPO_PASSWORD`。模板不固化内部 URL 或凭据。只有三条命令全部返回 0，工作流才把 Manifest 从 `generated` 更新为 `empty-scaffold-verified`。任一步失败都返回非 0并保留证据：
 
-```
-output/user-service/
+- `scaffold-generation.stdout.log` / `scaffold-generation.stderr.log`
+- `mvnw-validate.*.log`、`mvnw-test.*.log`、`mvnw-package.*.log`
+- `scaffold-verification.json`
+- `scaffold-workflow.json`
+
+
+## 3. 生成结果
+
+```text
+metadata-service/
+├── .mvn/
+├── mvnw
 ├── pom.xml
-├── README.md
-├── user-service-domain/
-├── user-service-application/
-├── user-service-infrastructure/
-├── user-service-adapter/
-│   └── user-service-web/
-└── user-service-bootstrap/
+├── metadata-service-domain/
+├── metadata-service-application/
+├── metadata-service-infrastructure/
+├── metadata-service-adapter/
+│   └── metadata-service-web/
+└── metadata-service-bootstrap/
+    └── src/main/java/com/yss/metadata/MetadataServiceApplication.java
 ```
 
-## 2. 编译和运行
+生成器只提供工程结构、POM、项目级 Maven 配置、机械启动入口和通用测试依赖，业务空工程不生成产品实体、表、Controller 或 API；默认 examples/reference/ 包含独立 ReferenceEntry 示例 CRUD。
 
-### 2.1 编译项目
+## 4. 后续路由
+
+完成 golden first slice 后，必须运行：
+
+目标目录必须不存在。`--force`、旧项目迁移和当前模板升级均为 `unsupported`。旧项目继续按原工程维护；现代化改造必须单独立项、先评估再逐切片迁移。
+
+如需本地启动机械入口：
 
 ```bash
-cd output/user-service
-./mvnw clean compile
+cd /path/to/implementation-repo/metadata-service
+./mvnw spring-boot:run -pl metadata-service-bootstrap
 ```
-
-### 2.2 运行项目
-
-```bash
-# 方式1: 使用 Maven 插件
-./mvnw spring-boot:run -pl user-service-bootstrap
-
-# 方式2: 打包后运行
-./mvnw clean verify
-java -jar user-service-bootstrap/target/user-service-bootstrap-1.0.0-SNAPSHOT.jar
-```
-
-### 2.3 访问应用
-
-```bash
-# 健康检查
-curl http://localhost:8080/actuator/health
-
-# 查询用户列表
-curl -X POST http://localhost:8080/api/users/page \
-  -H "Content-Type: application/json" \
-  -d '{
-    "pageNum": 1,
-    "pageSize": 10
-  }'
-
-# 新增用户
-curl -X POST http://localhost:8080/api/users \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "zhangsan",
-    "email": "zhangsan@example.com"
-  }'
-
-# 查询用户详情
-curl http://localhost:8080/api/users/1
-
-# 更新用户
-curl -X PUT http://localhost:8080/api/users \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": 1,
-    "username": "zhangsan",
-    "email": "zhangsan@yss.com",
-    "status": 1
-  }'
-
-# 删除用户
-curl -X DELETE http://localhost:8080/api/users/1
-```
-
-## 3. 添加新实体
-
-### 3.1 创建 Domain 层对象
-
-**ProductAddCmd.java**:
-```java
-package com.yss.user.client.dto.cmd;
-
-import com.yss.cloud.dto.CommandDTO;
-import lombok.Getter;
-import lombok.Setter;
-import javax.validation.constraints.NotBlank;
-
-@Getter
-@Setter
-public class ProductAddCmd extends CommandDTO {
-    @NotBlank(message = "产品名称不能为空")
-    private String productName;
-
-    private String description;
-    private Double price;
-}
-```
-
-**ProductVO.java**:
-```java
-package com.yss.user.client.vo;
-
-import lombok.Getter;
-import lombok.Setter;
-import java.io.Serializable;
-
-@Getter
-@Setter
-public class ProductVO implements Serializable {
-    private Long id;
-    private String productName;
-    private String description;
-    private Double price;
-}
-```
-
-**ProductGateway.java**:
-```java
-package com.yss.user.domain.gateway;
-
-import com.yss.cloud.dto.result.PageResult;
-import com.yss.user.client.dto.cmd.ProductAddCmd;
-import com.yss.user.client.vo.ProductVO;
-
-public interface ProductGateway {
-    Long addProduct(ProductAddCmd cmd);
-    ProductVO getProductById(Long id);
-    PageResult<ProductVO> pageProduct(ProductPageQuery query);
-}
-```
-
-### 3.2 创建 Application 层服务
-
-**ProductService.java**:
-```java
-package com.yss.user.core.service;
-
-public interface ProductService {
-    Long addProduct(ProductAddCmd cmd);
-    ProductVO getProductById(Long id);
-}
-```
-
-**ProductServiceImpl.java**:
-```java
-package com.yss.user.core.service.impl;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-@Service
-@RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService {
-
-    private final ProductGateway productGateway;
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long addProduct(ProductAddCmd cmd) {
-        return productGateway.addProduct(cmd);
-    }
-
-    @Override
-    public ProductVO getProductById(Long id) {
-        return productGateway.getProductById(id);
-    }
-}
-```
-
-### 3.3 创建 Infrastructure 层实现
-
-**ProductPO.java**:
-```java
-package com.yss.user.repository.entity;
-
-import com.baomidou.mybatisplus.annotation.*;
-import com.yss.cloud.mybatis.entity.AuditableEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
-
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@TableName("t_product")
-public class ProductPO extends AuditableEntity {
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
-
-    @TableField("product_name")
-    private String productName;
-
-    @TableField("description")
-    private String description;
-
-    @TableField("price")
-    private Double price;
-}
-```
-
-**ProductRepository.java**:
-```java
-package com.yss.user.repository;
-
-import com.yss.cloud.mybatis.support.BasePlusRepository;
-import com.yss.user.repository.entity.ProductPO;
-
-public interface ProductRepository extends BasePlusRepository<ProductPO> {
-}
-```
-
-**ProductGatewayImpl.java**:
-```java
-package com.yss.user.repository.gateway.impl;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-
-@Repository
-@RequiredArgsConstructor
-public class ProductGatewayImpl implements ProductGateway {
-
-    private final ProductRepository productRepository;
-
-    @Override
-    public Long addProduct(ProductAddCmd cmd) {
-        ProductPO po = ProductConvertor.INSTANCE.cmdToPO(cmd);
-        productRepository.insert(po);
-        return po.getId();
-    }
-
-    @Override
-    public ProductVO getProductById(Long id) {
-        ProductPO po = productRepository.selectById(id);
-        return ProductConvertor.INSTANCE.toVO(po);
-    }
-}
-```
-
-### 3.4 创建 Adapter 层控制器
-
-**ProductController.java**:
-```java
-package com.yss.user.rest;
-
-import com.yss.cloud.dto.result.SingleResult;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-
-@RestController
-@RequestMapping("/api/products")
-@RequiredArgsConstructor
-public class ProductController {
-
-    private final ProductService productService;
-
-    @PostMapping
-    public SingleResult<Long> add(@Valid @RequestBody ProductAddCmd cmd) {
-        return SingleResult.of(productService.addProduct(cmd));
-    }
-
-    @GetMapping("/{id}")
-    public SingleResult<ProductVO> getById(@PathVariable Long id) {
-        return SingleResult.of(productService.getProductById(id));
-    }
-}
-```
-
-### 3.5 创建数据库表
-
-```sql
-CREATE TABLE `t_product` (
-  `id` bigint(20) NOT NULL COMMENT '主键ID',
-  `product_name` varchar(100) NOT NULL COMMENT '产品名称',
-  `description` varchar(500) DEFAULT NULL COMMENT '描述',
-  `price` decimal(10,2) DEFAULT NULL COMMENT '价格',
-  `deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标记',
-  `created_by` varchar(50) DEFAULT NULL COMMENT '创建人',
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL COMMENT '最后修改人',
-  `last_modified_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品表';
-```
-
-## 4. 集成其他功能
-
-### 4.1 添加 Redis 缓存
-
-**1. 添加依赖**:
-```xml
-<dependency>
-    <groupId>com.yss.cloud</groupId>
-    <artifactId>yss-component-cache-starter</artifactId>
-</dependency>
-```
-
-**2. 配置 Redis**:
-```yaml
-spring:
-  redis:
-    host: localhost
-    port: 6379
-    database: 0
-```
-
-**3. 使用缓存**:
-```java
-@Service
-public class UserServiceImpl implements UserService {
-
-    @Cacheable(value = "user", key = "#id")
-    public UserVO getUserById(Long id) {
-        return userGateway.getUserById(id);
-    }
-
-    @CacheEvict(value = "user", key = "#id")
-    public void deleteUser(Long id) {
-        userGateway.deleteUser(id);
-    }
-}
-```
-
-### 4.2 添加 Swagger 文档
-
-**1. 添加依赖**:
-```xml
-<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-boot-starter</artifactId>
-    <version>3.0.0</version>
-</dependency>
-```
-
-**2. 配置 Swagger**:
-```java
-@Configuration
-@EnableOpenApi
-public class SwaggerConfig {
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.OAS_30)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.yss.user.rest"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-}
-```
-
-**3. 访问文档**:
-```
-http://localhost:8080/swagger-ui/index.html
-```
-
-## 5. 常见问题
-
-### 5.1 如何修改端口？
-
-修改 `application.yml`:
-```yaml
-server:
-  port: 9090
-```
-
-### 5.2 如何配置多环境？
-
-创建多个配置文件：
-- `application-dev.yml` (开发环境)
-- `application-test.yml` (测试环境)
-- `application-prod.yml` (生产环境)
-
-启动时指定环境：
-```bash
-java -jar app.jar --spring.profiles.active=prod
-```
-
-### 5.3 如何添加全局异常处理？
-
-```java
-@RestControllerAdvice
-public class GlobalExceptionHandler {
-
-    @ExceptionHandler(BizException.class)
-    public SingleResult<Void> handleBizException(BizException e) {
-        return SingleResult.fail(e.getCode(), e.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public SingleResult<Void> handleException(Exception e) {
-        return SingleResult.fail("SYSTEM_ERROR", "系统异常");
-    }
-}
-```
-
-## 6. 性能优化建议
-
-### 6.1 数据库优化
-- 合理使用索引
-- 避免 N+1 查询
-- 使用分页查询
-- 开启 MyBatis Plus 的性能分析插件
-
-### 6.2 缓存优化
-- 热点数据使用 Redis 缓存
-- 合理设置缓存过期时间
-- 使用缓存预热
-
-### 6.3 代码优化
-- 使用异步处理耗时操作
-- 合理使用线程池
-- 避免大事务

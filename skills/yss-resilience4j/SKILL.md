@@ -1,48 +1,42 @@
 ---
 name: yss-resilience4j
-description: Use when 用于 YSS Resilience4j starter、网关熔断、限流降级、GlobalCircuitExceptionAdvice、GatewayConfiguration 和断路器配置排障。
+description: "接入或排查 YSS Resilience4j starter、网关熔断、限流降级与断路器配置。"
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
 # yss-resilience4j
 
-Use this skill for YSS Resilience4j 组件. Keep implementation grounded in the local project and resolvable YSS backend component source.
+处理 YSS 网关断路器、fallback 响应和韧性配置；阈值、状态与恢复行为按服务 SLO 和当前 API 契约核验。
 
-中文说明：本技能用于 YSS Resilience4j 组件。执行时优先读取源码索引，避免凭记忆猜类名、配置项或接入方式。
+## 源码定位
 
-## Source Index First
+按 [源码定位策略](references/shared/skills/yss-skill-source-index-refresh/references/source-location.md) 确认真实位置，再从 [平台索引](references/source-index.md) 定位当前任务需要的源码。`yss-microservice-components/yss-component-resilience4j-starter` 仅是模块路径提示。
 
-- Backend source location is environment-specific; resolve it with `yss-source-index/references/source-location.md`.
-- Generated index: `references/source-index.md`
-- Component path hints: `yss-microservice-components/yss-component-resilience4j-starter`
+## 工作流
 
-Read `references/source-index.md` as a path-hint index whenever the task depends on exact modules, annotations, auto configuration, properties, controllers, clients, repositories, DTOs, handlers, or troubleshooting.
+1. 按平台索引定位当前组件源码与 `readme.md`。
+2. 区分网关断路器配置、fallback 响应、全局 circuit 异常映射与韧性排障。
+3. 装配问题核验 `GatewayConfiguration` 的 route/filter；异常响应核验 `GlobalCircuitExceptionAdvice`。
+4. 阈值和超时在配置中调整，不硬编码到业务 handler。
+5. fallback 状态和正文与网关/API 合同一致。
 
-## Workflow
+## 能力边界
 
-1. Read `references/source-index.md`, then read component `readme.md`.
-2. Identify whether the task is gateway circuit breaker configuration, fallback response, global circuit exception handling, or resilience troubleshooting.
-3. Inspect `GatewayConfiguration` for route/filter wiring and `GlobalCircuitExceptionAdvice` for exception response behavior.
-4. Tune thresholds/timeouts in configuration rather than hardcoding resilience behavior in business handlers.
-5. Keep fallback responses consistent with gateway/API response contracts.
+- 网关韧性装配：`GatewayConfiguration`。
+- Circuit 异常映射：`GlobalCircuitExceptionAdvice`。
+- 运行指引：README“轻量微服务断路器”。
 
-## Capability Split
+## 验收
 
-- Gateway resilience wiring: `GatewayConfiguration`.
-- Circuit exception mapping: `GlobalCircuitExceptionAdvice`.
-- Operational guidance: README "轻量微服务断路器".
+- 核验所需依赖或 starter 已进入实际工程。
+- 断路器名称和 route ID 与网关配置一致。
+- fallback 状态/正文符合前端与 API 消费方契约。
+- 超时、慢调用与失败阈值符合服务 SLO。
+- 日志/指标可诊断 open、half-open 和 recovered 状态。
 
-## Checklist
+## 修改边界
 
-- Required dependency or starter module is present.
-- Circuit breaker names and route IDs match gateway configuration.
-- Fallback status/body are acceptable for frontend/API consumers.
-- Timeout, slow-call, and failure thresholds match service SLOs.
-- Logs/metrics make open/half-open/recovered states diagnosable.
-
-## Do Not
-
-- Do not invent class names or configuration keys without checking the source index.
-- Do not replace component extension points with business-local framework code.
-- Do not broaden the task into unrelated YSS components unless the user asks.
+- 类名和配置 key 先核验当前索引与源码，不凭记忆补造。
+- 使用组件已有扩展 seam，不以业务本地框架代码替换。
+- 保持当前组件任务范围；扩展到其他组件须有用户要求或重新路由依据。

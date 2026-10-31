@@ -3,56 +3,42 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "生命周期",
-      "description": "用于 YSS 产品生命周期、路由和跨仓库协作的技能。",
+      "title": "安装与任务协作",
+      "description": "用于 CLI、Skills 安装、规格任务整理与技能来源维护。",
       "skills": [
-        "yss-domain-modeling",
-        "microapp-commit",
+        "setup-yss-harness",
         "yss-product-lifecycle",
-        "yss-router",
-        "yss-source-index"
+        "yss-implementation-contract-compiler",
+        "yss-skill-source-index-refresh"
       ]
     },
     {
       "title": "后端",
       "description": "用于 YSS Java、DDD、数据访问和服务端契约实现的技能。",
       "skills": [
-        "yss-backend-scaffold-application",
-        "yss-backend-scaffold-domain",
-        "yss-backend-scaffold-infrastructure",
-        "yss-backend-scaffold-web",
-        "yss-db2mybatis",
+        "yss-application",
         "yss-ddd-scaffold-generator",
         "yss-domain",
         "yss-dto",
-        "yss-jdbc",
+        "yss-layered-mvc-scaffold-generator",
         "yss-mybatis",
-        "yss-repository"
+        "yss-repository",
+        "yss-web-controller",
+        "yss-backend-spec-review"
       ]
     },
     {
-      "title": "前端",
-      "description": "用于 YSS Vue、Formily、页面模块和 UI 实现的技能。",
+      "title": "产品设计",
+      "description": "用于 YSS 设计系统与产品原型阶段的技能。",
       "skills": [
-        "yss-components",
         "yss-design-system",
-        "yss-formily",
-        "yss-formily-schema-generator",
-        "yss-frontend-scaffold-generator",
-        "yss-hook",
-        "yss-page-module-development",
-        "yss-ui",
-        "yss-use-table-height",
-        "yss-use-tree-height",
-        "yss-web-controller"
+        "yss-prototype-stage"
       ]
     },
     {
       "title": "OpenAPI",
       "description": "用于 YSS API 设计、审查、治理和生成集成的技能。",
       "skills": [
-        "api-integration",
-        "yss-openapi",
         "yss-openapi-draft-review",
         "yss-openapi-governance"
       ]
@@ -62,24 +48,19 @@
       "description": "用于 YSS 缓存、基础设施、文件、日志和通用组件接入的技能。",
       "skills": [
         "yss-cache",
-        "yss-dictionary",
         "yss-distributed-id",
         "yss-excel-mvc",
         "yss-exception",
-        "yss-log",
         "yss-resilience4j",
         "yss-security-algorithm",
-        "yss-taskflow",
         "yss-up-springboot3",
         "yss-userinfo",
-        "yss-validation",
-        "yss-valuation",
-        "yss-variable"
+        "yss-validation"
       ]
     },
     {
-      "title": "质量治理",
-      "description": "用于审计、质量门禁和工程治理的技能。",
+      "title": "审计日志",
+      "description": "用于应用审计日志的接入与排查。",
       "skills": [
         "yss-audit-log"
       ]

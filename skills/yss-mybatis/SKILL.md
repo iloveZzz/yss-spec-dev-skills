@@ -1,79 +1,69 @@
 ---
 name: yss-mybatis
-description: 用于 YSS MyBatis 与 MyBatis-Plus 持久层规范、配置和排障。当用户提到 BaseRepository、BasePlusRepository、PageQuery 自动分页、多数据源、批量插入或 MyBatis 配置异常时调用。
+description: 核验、接入或排查 YSS MyBatis/MyBatis-Plus 的 Mapper/Repository 基类、分页、批量 SQL、扫描与数据源；不生成持久层结构。
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
 # yss-mybatis
 
-用于处理 `yss-component-persistence` 相关的持久层规范、接入和问题定位。
+本 Skill 只维护 `yss-component-persistence` 的组件能力、选择条件和排障顺序。PO、Repository、Convertor、Gateway/Query Adapter 的结构与生成边界由 `yss-repository` 负责。
 
-## 何时使用
+## 入口与前置
 
-- 用户要定义新的 Repository。
-- 用户在 MyBatis 与 MyBatis-Plus 两种模式间排查问题。
-- 用户提到自动分页、`PageQuery`、批量插入、多数据源。
-- 用户反馈 Mapper 扫描、分页不生效、批量性能差。
+2. 精确类名、方法签名、配置 key、默认值或启用条件必须先读 [source-index.md](references/source-index.md)，并按 `references/shared/skills/yss-skill-source-index-refresh/references/source-location.md` 核验组件 tree 与组件子树 clean 状态。
+3. 组件 tree 不匹配或 persistence 子树为 dirty 时，路径提示只能用于定位；精确实现或审查结论返回 `stale` / `missing_evidence`，刷新索引后再继续。
+4. 新 DDD / MVC scaffold 只支持批准的 `mybatis-plus` Profile。普通 MyBatis 仅用于既有工程维护、兼容与排障；新增支持必须有独立 Profile 和 fixture，不自动猜测或混用。
 
-## 工作方式
+## 稳定决策规则
 
-1. 先确认项目使用的是通用 MyBatis 还是 MyBatis-Plus。
-2. 涉及真实类名、配置项、模块依赖或排障时，先读 `references/source-index.md`，再定位源码或文档。
-3. 先复用现有基类与配置，不手搓新的基础设施。
-4. 涉及分页时，先验证 `PageQuery` 传递链路和拦截器是否生效。
+<a id="mybatis.binding"></a>
+- 基类、Mapper 注解、XML 位置和扫描范围以当前工程配置、当前工程基线及当前组件源码共同决定；不得在既有体系外再造 Mapper 抽象。
+<a id="mybatis.pagination"></a>
+- 一条查询 seam 只能有一个分页责任模型。核对实际插件/切面开关、拦截范围、参数绑定条件和返回 total 的责任，不以“依赖已引入”代替行为验证。
+<a id="mybatis.batch"></a>
+- 批量写入必须证明是组件当前支持的 SQL 级批量能力，并验证分批大小、字段填充、主键和数据库方言；循环单条写入不能冒充批量 SQL。
+- 多数据源实例创建不等于动态路由、线程上下文切换或事务传播。先做 capability check；组件未提供的路由能力必须由批准的上层适配承担。
+<a id="mybatis.mapping"></a>
+- Mapper/XML、逻辑删除、审计字段、主键策略、动态排序/分组白名单和参数绑定必须与数据合同一致；任何 SQL/DDL/索引新影响返回 `new_impacts`。
+<a id="mybatis.transaction"></a>
+- 事务边界归批准的 Application 用例或 MVC service/core；Repository 不临时声明新的业务事务。
 
-## 源码索引
+## 能力选择记录
 
-- 源码位置不要假设固定目录；先按 `yss-source-index/references/source-location.md` 定位。
-- 当前技能索引：`references/source-index.md`
-- 重点源码入口通常包括 `BaseRepository`、`BasePlusRepository`、`EntityQueryAspect`、`PageQueryEntityConfigration`、`MybatisBaseConfiguration`、`MybatisPlusConfiguration`、`MultiDataSourceConfiguration`、`MultiDataSourceHolder`。
+| 既有工程调用 seam | 选择与核验 |
+|---|---|
+| `PageQuery` 经组件切面进入 Repository/Gateway | 核对代理切点、参数位置、PageHelper 开关、实际 SQL 与 `tempTotalCount`；不能因 Bean 注册就认定切面命中。 |
+| Mapper 使用 MyBatis-Plus `IPage` | 核对 MP 分页开关、方言、实际 SQL 与 total；同一次查询不得叠加 PageHelper 上下文。两插件都注册不等于查询已双分页。 |
+| 原生 Mapper/Example/ListMapper | 按当前源码和实体映射选择 `BaseRepository<T,D>`；与完整 MP `BasePlusRepository<T>` 不可直接互换，混用或复合键须验证主键方法、XML 与映射。 |
+| SQL 级批量写入 | 核对公开入口、分片大小、目标方言生成的单批 SQL、审计填充和 ID；多个分片整体回滚由上层用例事务保证。若 batch size 存在进程级可变状态，多 Spring Context 不得据此宣称配置隔离。 |
+| 命名数据源 | Holder 中有多个 DataSource 不证明动态路由；记录实际 Mapper 的 `SqlSessionFactory`/DataSource、主池与自建池所有权，以及事务绑定。 |
 
-当组件源码变化后，用 `yss-source-index` 刷新索引；刷新或读取前先按源码定位策略确认真实位置。
+以上仅对命中的能力记录，不改变两套分页插件的当前默认注册行为；选择由当前工程配置、消费工程配置和运行测试共同证明。
 
-## 实施建议
+## 任务分流
 
-- 通用模式优先继承 `BaseRepository`
-- MP 模式优先继承项目既有的 `BasePlusRepository`
-- 批量导入优先使用真正的 SQL 级批量方法，不要默认循环单条插入
-- 多数据源问题优先先看配置和扫描范围，再怀疑业务代码
-- 分页查询优先沿用 `PageQuery` 传递链路，不要在 Repository 内临时发明分页参数。
-- 生成或重构持久层时，先看当前模块已有 Repository/Mapper 命名、包路径、XML 位置。
-
-## 检查清单
-
-- Mapper 扫描路径是否正确。
-- XML 路径和接口是否对齐。
-- `PageQuery` 是否真的出现在被拦截的方法参数里。
-- 批量方法是否用了项目推荐实现。
-- 多数据源名称和主从配置是否一致。
-- MyBatis 与 MyBatis-Plus 的基类、分页插件和扫描配置是否混用。
-- 数据源切换是否在事务边界之前完成。
+| 请求 | 本 Skill 动作 | 后续路由 |
+|---|---|---|
+| 组件接入、基类选择、配置核验 | 读取当前 Profile 和源码能力矩阵，给出来源可追踪的选择 | 需要结构实现时转 `yss-repository` |
+| 生成 PO / Repository / Convertor / GatewayImpl | 不生成 | `yss-repository` |
+| 普通 MyBatis 新工程生成 | `unsupported` | 新 Profile / fixture 获批后再进入 |
 
 ## 排障顺序
 
-1. 确认依赖模块：starter、mapper、plus starter、persistence common。
-2. 确认 Mapper/Repository 扫描范围。
-3. 确认分页参数、分页切面或插件是否参与调用。
-4. 确认 XML、方法签名、resultMap/字段映射是否一致。
-5. 确认多数据源配置和当前线程数据源上下文。
-6. 最后再排查 SQL 本身和数据库执行计划。
+1. 依赖与 Profile：starter、组件版本、MyBatis/MyBatis-Plus 模式是否与合同一致。
+2. 装配与开关：自动配置、条件属性、Mapper 扫描和 XML location 是否真实生效。
+3. 调用 seam：代理是否命中、分页参数位置/类型、分页插件链和 total 回填责任。
+4. 映射：接口签名、XML namespace、resultMap、字段、逻辑删除和主键策略。
+5. 批量：是否调用当前公开批量入口、分批与方言是否匹配、是否退化为循环单条；核对 batch size 在多个应用上下文中的作用域。
+6. 数据源：先确认组件只提供了什么，再检查 Mapper 实际绑定的会话工厂、上层路由与事务进入顺序；不得假设存在当前线程数据源上下文。
+7. 最后检查 SQL、绑定参数、数据库方言与执行计划。
 
-## 修改约束
+## 结果与验证
 
-- 不要同时引入两套分页机制而不说明谁生效。
-- 不要在已有 Repository 基类体系之外再造一套 Mapper 抽象。
-- 若用户只是要生成持久层骨架，优先衔接 `yss-db2mybatis`。
+- 使用项目根 `./mvnw ...` 记录实际命令、退出码和时间；H2 只证明本地/测试行为，不证明生产方言。
+- `daily` 在同 Ticket 返回组件来源、分页/批量/映射约束及真实测试/命令/退出码，交独立 Reviewer 绑定当前候选；`governed` 按 YSS Skill Execution Result v2 返回证据、`seam_deferred`、`deviations`、`new_impacts`、`drift` 和 `violation`。
 
-## 按需读取
+## 持久化选择记录
 
-- 源码索引：`references/source-index.md`
-- 基础 Repository：`assets/BaseRepository.java`
-- 分页切面：`assets/EntityQueryAspect.java`
-- MyBatis 基础配置：`assets/MybatisBaseConfiguration.java`
-
-## 阶段 7 合同
-
-- 仅在数据架构、Repository 策略和批准合同明确时使用。
-- Mapper/XML 骨架可受控生成；查询语义、分页、数据源切换和事务行为使用 `behavior-tdd`。
-- 按统一 `YSS Skill Execution Result` 返回 Mapper/XML/配置、集成测试、实际 `./mvnw ...` 结果和新增 SQL/DDL/索引影响。
+在已有数据合同 / persistence_strategy 中记录：实际 Mapper 基类、组件源码与平台绑定、分页唯一责任者、主键与审计填充，以及命中批量时的 SQL 入口、分批大小和方言证据。`BaseMapper` 与组件扩展基类按所需能力选择，不因命名不同判违规；依赖存在和循环 insert 均不证明批量能力。未命中的能力不强制生成。
