@@ -1,54 +1,67 @@
 ---
 name: yss-security-algorithm
-description: Use when YSS RSA/AES/DES/SM2/SM4 encryption, JWT/JWK configuration, password encoding, key loading, rotation, or decryption failures are involved.
+description: "审查、迁移或排查既有 YSS 加解密、JWT/JWK、密码编码与密钥使用；当前组件禁止新生产接入。"
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
 # yss-security-algorithm
 
-Use this skill for YSS 安全算法组件. Keep implementation grounded in the local project and resolvable YSS backend component source.
+作为既有 YSS 安全算法组件的盘点、分诊、风险收敛和迁移入口。当前组件禁止新生产接入；准入结论不因源码可读或可编译而改变。
 
-中文说明：本技能用于 YSS 安全算法组件。执行时优先读取源码索引，避免凭记忆猜类名、配置项或接入方式。
+## 当前准入结论
 
-## Source Index First
+- `yss-component-security-algorithm` 当前只允许既有工程只读盘点、故障分诊、风险收敛和迁移；禁止为新项目、新 Slice 或新生产能力接入。
+- Registry provider 使用 `new_adoption: forbidden`，即 new-adoption-forbidden 语义；新接入必须返回稳定失败码 `component-new-adoption-forbidden`，不得因构件可编译、索引 fresh 或平台基础能力通过而放行。
+- 硬编码私钥、固定 key id、进程启动时临时生成密钥以及 `noop` password encoder 均不构成生产密钥管理。组件源码可定位或可编译也不能解除该结论。
+- 只有平台目录中的 `component.security-algorithm` 对目标架构为 `verified`，精确构件绑定仍有效，并且外部 KMS / Secret Manager、轮换撤销、兼容迁移、行为测试和安全责任人审查全部闭合后，才能通过独立决策重新开放新接入；本 Skill 不自行修改该状态。
+- 新接入请求返回 `component-new-adoption-forbidden` / `blocked-for-production`，并给出迁移或外部密钥服务方案；不得生成基于遗留工具类的生产代码。
 
-- Backend source location is environment-specific; resolve it with `yss-source-index/references/source-location.md`.
-- Generated index: `references/source-index.md`
-- Component path hints: `yss-microservice-components/yss-component-security-algorithm`
+## 源码定位
 
-Read `references/source-index.md` as a path-hint index whenever the task depends on exact modules, annotations, auto configuration, properties, controllers, clients, repositories, DTOs, handlers, or troubleshooting.
+按 [源码定位策略](references/shared/skills/yss-skill-source-index-refresh/references/source-location.md) 确认真实位置，再从 [平台索引](references/source-index.md) 定位当前任务需要的源码。`yss-microservice-components/yss-component-security-algorithm` 仅是模块路径提示。
 
-## Workflow
+## 工作流
 
-1. Identify whether the task is symmetric encryption, asymmetric encryption, SM algorithms, JWT key generation/configuration, or decryption troubleshooting.
-2. Read `references/source-index.md`, then inspect `CryptoType`, `SecurityCryptoUtil`, `KeyGeneratorUtils`, and `DefaultJwtConfiguration`.
-3. Use `CryptoType` to route algorithm-specific behavior; current enum values include `RSA`, `AES`, `DES`, `SM2`, and `SM4`.
-4. Treat `SecurityCryptoUtil` and `Jwks` as compatibility/legacy references only. The current `Jwks.generateRsa()` decodes hardcoded `PK`/`SK` constants rather than generating or loading a managed key, while EC/secret keys can be process-local or regenerated at startup; none is production key management.
-5. For production changes, externalize keys/secrets and avoid copying hardcoded sample keys into business modules.
+1. 识别任务是新接入、既有故障、风险止血还是迁移；新接入直接按上述准入结论阻断。
+2. 读取 `references/source-index.md`，再按需检查 `CryptoType`、`SecurityCryptoUtil`、`KeyGeneratorUtils` 和 `DefaultJwtConfiguration`，记录实际算法、模式、编码、key id、密钥来源、调用方和持久化数据范围。
+3. 对既有使用先完成暴露面和兼容盘点：源码/配置中的密钥材料、JWT 签发与验签方、密码散列格式、密文格式、历史数据、下游消费者及回滚要求。
+4. 在 `boot3-java17` 中，`Jwks.generateRsa()`、`generateEc()` 和 `generateSecret()` 是 deprecated fail-closed 入口：它们不生成、不解码密钥，必须抛出错误并要求 managed `JWKSource`。Boot 2 中可能存在的硬编码/临时密钥实现只用于风险盘点，不得迁入 Boot 3。
+5. `SecurityCryptoUtil` 是兼容 facade，只有显式安装获批 `SecurityCryptoProvider` 后才委派 encrypt/decrypt；未配置 provider 时 fail closed。provider 必须是外部 KMS / Secret Provider 或经批准的托管加密适配器。
+6. `RsaEcbOAEPWithSHA` 保留 deprecated 的 public constructor、`TextEncryptor` 类型和实例 `encrypt` / `decrypt` 签名作为二进制/源码兼容适配器；实现只委派 `SecurityCryptoUtil`，不得恢复内置私钥或自行执行遗留加密。
+7. 迁移目标必须使用批准的外部 KMS / Secret Manager 或等价受控密钥服务，应用只保存 key reference/version；密钥材料不得进入源码、普通配置、日志、证据文件或聊天记录。
+8. 设计分阶段轮换：冻结新旧写入边界，建立新 key version，双读/多版本解密或离线重加密，验证存量数据和 JWT 消费者，再撤销旧 key；不得直接覆盖旧密钥导致数据或令牌不可恢复。
+9. Boot 3 默认密码 Bean 与兼容 public static factory 都调用 `PasswordEncoderFactories.createDelegatingPasswordEncoder()`；不得把 delegating encoder 的默认 id 改回 `noop`。密码迁移仍需兼容升级策略。
+10. JWT 必须验证 signature、issuer、audience、expiry 和允许算法，payload parsing 不能充当认证。
+11. 输出迁移清单、数据/调用方影响、回滚点、验证结果和安全审查引用；缺任一生产前提时保持 `blocked-for-production`。
 
-## Security Notes
+## 安全与兼容
 
-- The current utility contains a complete hardcoded RSA private key and fixed key material; do not use it for production data. Existing exposure requires rotation/revocation planning, not merely avoiding new constants.
-- `Jwks.generateRsa()` contains a complete hardcoded RSA private key; the key identifier is static and must be treated as compromised until rotated.
-- `DefaultJwtConfiguration` generates or selects JWK material at startup and currently selects `noop` as the DelegatingPasswordEncoder default; persistence, rotation, an external secret source, and an explicit password-encoder override are production prerequisites.
-- Verify whether callers need encryption for storage, transport, signing, or compatibility; choose algorithm and key lifecycle accordingly.
-- Prefer environment/config/secret-manager backed keys for deployable code.
-- Keep plaintext, ciphertext, encoding format, and key type explicit in API contracts.
+- Boot 2 历史实现中的硬编码 RSA 私钥、固定 key id、临时 JWK 与 noop 默认值必须视为已暴露风险并进入轮换/撤销盘点；不得把这些历史事实误写成 Boot 3 当前实现。
+- Boot 3 `Jwks` fail closed，`DefaultJwtConfiguration` 只提供 `PasswordEncoderFactories` 的 delegating encoder；JWT/JWK 必须由应用安全层或外部 KMS 提供。
+- 兼容适配器只保留公开类型和方法契约，不恢复旧密钥、旧密文解密或隐式 provider。存量兼容仍需代表性 ciphertext/JWT/password fixtures、回滚点和安全责任人审查。
+- 可部署实现消费批准的受控密钥服务和 key reference，不从示例推导密钥来源。
+- API 合同明确明文/密文、编码格式和密钥类型。
 
-## Checklist
+## 验收
 
-- Required dependency or starter module is present.
-- Algorithm choice is explicit and compatible with the caller.
-- Key source and rotation story are documented for production code.
-- JWT signatures are verified with issuer/audience/expiry policy; payload parsing alone is never authentication.
-- Encoding format is clear: Base64, hex, UTF-8 string, or raw bytes.
-- Decrypt path uses the matching algorithm/key type.
-- No passwords, private keys, or long-lived secrets are added to source files.
-- If external key storage, rotation/revocation, algorithm parameters, compatibility tests, or security-owner review is missing, return `blocked-for-production` instead of generating crypto code.
+- 核验所需依赖或 starter 已进入实际工程。
+- 算法选择明确并与调用方兼容。
+- 生产前提包含密钥来源与轮换方案。
+- JWT 验签覆盖 issuer/audience/expiry 策略，payload 解析不构成认证。
+- 编码格式明确区分 Base64、hex、UTF-8 string 和 raw bytes。
+- 解密使用匹配算法与密钥类型。
+- 源码不新增密码、私钥或长期 secret。
+- 外部密钥存储、轮换撤销、算法参数、兼容测试或安全责任人审查缺任一项时，返回 `blocked-for-production`，不生成生产加密代码。
+- `Jwks` 缺 managed source、`SecurityCryptoUtil` 缺批准的 `SecurityCryptoProvider` 时均 fail closed。
+- Deprecated 兼容适配器只保留公开签名并委派批准 provider，不恢复新接入资格。
+- 禁用旧 key 或 encoder 前，用代表性 fixture 证明存量 ciphertext/JWT/password 兼容。
+- 日志与证据只包含 key reference 和脱敏 metadata，不包含明文、私钥、seed、shared secret 或完整 token。
 
-## Do Not
+## 修改边界
 
-- Do not invent class names or configuration keys without checking the source index.
-- Do not replace component extension points with business-local framework code.
-- Do not broaden the task into unrelated YSS components unless the user asks.
+- 类名和配置 key 先核验当前索引与源码，不凭记忆补造。
+- 使用组件已有扩展 seam，不以业务本地框架代码替换。
+- 保持当前组件任务范围；扩展到其他组件须有用户要求或重新路由依据。
+- 组件编译、索引 fresh 或既有工程依赖不解除新接入禁令。
+- Agent 输出不得复制、打印、就地轮换或重新签发密钥材料。

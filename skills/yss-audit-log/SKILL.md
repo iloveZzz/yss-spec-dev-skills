@@ -1,9 +1,9 @@
 ---
 name: yss-audit-log
-description: Use when YSS `AuditLog`, `EnableAuditLog`, audit SpEL summaries, async publication, subscriber registration, queue loss, or audit delivery failures are involved.
+description: "接入或排查 YSS AuditLog 的 SpEL 摘要、异步发布、订阅注册与审计投递。"
 ---
 
-> **消费项目上下文：** 本公开技能包不携带消费项目的 `AGENTS.md`、`CONTEXT.md` 或 `docs/`。文档中出现的这些路径均指可选的消费项目上下文；技能自身所需的参考资料、资源和脚本已随技能一同提供。
+> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
 
 # yss-audit-log
 
@@ -20,39 +20,37 @@ description: Use when YSS `AuditLog`, `EnableAuditLog`, audit SpEL summaries, as
 1. 先确认用户是在做“接入”还是“排障”。
 2. 涉及真实类名、配置项、订阅器或排障时，先读 `references/source-index.md`，再定位源码或文档。
 3. 优先检查项目里是否已有注解、配置项和订阅器实现，再决定改法。
-4. 只给出与当前问题直接相关的接入点：注解、配置、切面链路、订阅器扩展。
-5. 需要看实现细节时，再读取 `assets/` 下源码，不要先讲整套组件原理。
+4. 只给出与当前问题直接相关的接入点：注解、配置、切面链路、`CurrentUserProvider` 和订阅器扩展。
 
 ## 源码索引
 
-- 源码位置不要假设固定目录；先按 `yss-source-index/references/source-location.md` 定位。
+- 源码位置不要假设固定目录；先按 `references/shared/skills/yss-skill-source-index-refresh/references/source-location.md` 定位。
 - 当前技能索引：`references/source-index.md`
 - 重点源码入口通常包括审计注解、启用注解、切面、发布服务、事件模型、默认订阅器。
 
-当组件源码变化后，用 `yss-source-index` 刷新索引；刷新或读取前先按源码定位策略确认真实位置。
+当组件源码变化后，用 `yss-skill-source-index-refresh` 刷新索引；刷新或读取前先按源码定位策略确认真实位置。
 
 ## 接入检查清单
 
 - 启动类是否启用了类似 `@EnableAuditLog` 的能力。
 - 目标方法是否是可被 AOP 代理拦截的 Spring Bean 方法。
 - `@AuditLog` 是否标在正确的方法上。
-- `summary` 中的 SpEL 变量必须使用源码实际暴露的 context keys (`参数审计` / `结果审计`)；方法参数名不会自动进入 context。
-- 当前源码的变量正则只接受 ASCII 字母、数字、下划线和路径符号，不能可靠识别中文 context key；涉及 `#{参数审计...}` / `#{结果审计...}` 时先标记 `blocked`，除非组件修复并有表达式测试，不要声称摘要会被解析。
-- 项目编译参数是否保留了参数名。
-- `yss.audit.enabled` 是否开启；`sendSysManageEnabled` 与 `auditLogPrintEnabled` 在当前实现中不会自动阻止订阅器注册，需按源码验证，不能假设开关生效。
+- `boot3-java17` 的 SpEL 根上下文只暴露 ASCII key：`args` 和 `result`；例如 `#{args[0]}`、`#{result[name]}`。方法参数名不会自动进入上下文。
+- `args` 仅在 `@AuditLog(isNeedArgs = true)` 时写入，`result` 仅在 `isNeedResult = true` 时写入；表达式引用未启用的 key 属于配置错误，配置与表达式保持一致。
+- `boot3-java17` 不再使用中文 context key，也不得把 Boot 2 的历史模板直接复制到 Boot 3。处理旧模板时先读取所选平台线索引并显式迁移。
+- 按匹配源码核验 `yss.audit.enabled`、`sendSysManageEnabled` 与 `auditLogPrintEnabled` 是否控制订阅器注册及投递，不能从字段名或历史快照推断开关生效。
+- 审计身份由 `CurrentUserProvider` 提供；不得在审计切面中重新解析 Header 或未验签 JWT。
 
 ## 排障顺序
 
 1. 注解是否生效。
 2. 切面是否拦截到方法。
-3. SpEL 是否能从参数和返回值取到值。
+3. SpEL 是否能从已启用的 `args` / `result` 取到值。
 4. 发布服务是否成功入队。
 5. 订阅器是否被 Spring 扫描并注册。
 6. 下游系统管理或打印订阅器是否被开关禁用。
 7. 异步线程池或事件发布异常是否被吞掉。
-8. 参数名、返回值字段、异常分支是否满足摘要模板。
-
-审计切面当前是 `@AfterReturning`，只记录成功返回；异常审计、参数脱敏、队列满丢弃、线程池关闭、重试和幂等必须单独设计并测试。
+8. 参数位置、返回值字段、异常分支是否满足摘要模板。
 
 ## 修改约束
 
@@ -62,6 +60,8 @@ description: Use when YSS `AuditLog`, `EnableAuditLog`, audit SpEL summaries, as
 - 若无法确认真实注解或配置名，先在代码库里搜索现有实现，再修改。
 
 ## 按需读取
+
+以下 `assets/*.java` 均为 `boot2-java8` 历史资料，含 javax 与旧中文 SpEL key。Boot 3 使用其平台索引定位当前 jakarta / args / result 源码；不要修改历史资料来冒充新平台源码。
 
 - 源码索引：`references/source-index.md`
 - 审计切面与 SpEL 解析：`assets/AuditLogAspect.java`

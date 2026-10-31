@@ -1,5 +1,5 @@
 version: 1
 interface:
-  display_name: "YSS Domain"
-  short_description: "领域建模、聚合根、规则与网关设计实践落地标准化规范"
-  default_prompt: "Use $yss-domain to design aggregates, entities, domain gateways, and business rules for a YSS domain model."
+  display_name: YSS Domain
+  short_description: 在已确认的 DDD 边界内实现或重构领域行为、不变量、状态机与 Gateway；不起草领域设计。
+  default_prompt: 使用 $yss-domain 按当前用户目标和已有工程资料完成任务，保留用户文件并如实说明实际结果。

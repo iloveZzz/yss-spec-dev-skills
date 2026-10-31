@@ -1,59 +1,39 @@
-# YSS Spec Dev Skills
+# YSS Skills
 
-[![skills.sh](https://skills.sh/b/iloveZzz/yss-spec-dev-skills)](https://skills.sh/iloveZzz/yss-spec-dev-skills)
-
-面向 AI coding agents 的 YSS 开发技能集合，覆盖产品生命周期、DDD 后端、前端 UI、OpenAPI、数据访问和基础组件。技能源自 [yss-spec-project-template](https://github.com/iloveZzz/yss-spec-project-template) 的公开单向导出。
+用于 CLI 与 Skills 安装、业务规格、产品设计及 Java 后端开发的 27 项公开技能。内容来自 [模板仓](https://github.com/iloveZzz/yss-spec-project-template)，按当前公开清单单向同步；目录不再分发旧前端入口、脚本、测试套件或流程门禁。
 
 ## 安装
 
-使用 `skills` CLI：
+仅安装技能不需要安装 YSS CLI，也无需创建受管项目。使用 [skills CLI](https://github.com/vercel-labs/skills)，先选择技能和实际 Agent：
 
-```bash
-# 查看可用技能
+```sh
 npx skills@latest add iloveZzz/yss-spec-dev-skills --list
-
-# 安装指定技能
-npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-validation
-npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-ui
-
-# 自动适配当前环境：检测到单一 Agent 时直接安装，多 Agent 时按 CLI 提示选择
-npx skills@latest add iloveZzz/yss-spec-dev-skills
-
-# 明确安装到 Codex（非交互）
-npx skills@latest add iloveZzz/yss-spec-dev-skills \
-  --agent codex \
-  --yes
-
-# 安装到所有受支持的 Agent；会创建多个平台目录，请谨慎使用
-npx skills@latest add iloveZzz/yss-spec-dev-skills --all
+npx skills@latest add iloveZzz/yss-spec-dev-skills --skill setup-yss-harness --agent codex
+npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-validation --agent claude-code
 ```
 
-`api-integration` 和 `microapp-commit` 是兼容历史引用的 skill 名称；其余技能通常使用 `yss-*` 名称。安装指定技能时以 `--list` 输出的名称为准。
+默认安装到当前项目；需要跨项目使用时显式加 `--global`。先检查同名技能来源和用户修改，再更新；不自动安装到全部 Agent。需要程序安装或项目接入时，调用 `setup-yss-harness`，按实际 CLI 版本处理。
 
-## 技能范围
+## 项目受管技能
 
-- 生命周期与治理：领域建模、YSS Router、OpenAPI Draft、质量与生命周期门禁。
-- 后端与基础组件：DDD、Repository、MyBatis、缓存、文件、任务流、日志、安全和数据访问。
-- 前端与 UI：YSS UI、Ant Design、Formily、页面模块、Hook 和表格/树高度。
-- 工具与微应用：脚手架、数据库元数据生成、Spring Boot 3 升级和微应用提交规范。
+YSS CLI 3.0.1 起提供精简接口：`project` 安装技能与必要项目文档，`skills` 安装技能、宿主入口及必要引用资源，两者都不附带治理门禁。
 
-技能目录中的 `references/`、`assets/` 和 `scripts/` 是相应技能的支持资料，请在执行技能前按 `SKILL.md` 的要求读取。
-
-## 隐私与安全
-
-公开仓库中包含有效 `SKILL.md` 的技能会由 skills.sh 自动发现并建立页面；`skills` CLI 默认发送匿名使用数据，用于改进 CLI 和使用统计。可通过以下任一环境变量关闭：
-
-```bash
-DISABLE_TELEMETRY=1 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-ui
-DO_NOT_TRACK=1 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-ui
+```sh
+yss init --root ./demo --profile spec --installation skills
+yss skills list --root ./demo
+yss skills ensure setup-yss-harness yss-validation --root ./demo
+yss sync --root ./demo --dry-run
 ```
 
-技能可能包含脚本、代码示例和外部工具调用。安装前请审查对应 `SKILL.md`、`references/`、`assets/`、`scripts/` 和 skills.sh 安全审计结果；审计结果可能延迟，也不是绝对安全保证。不要把本仓库当作可执行代码的可信边界。
+受管项目使用 CLI 内嵌 Bundle；独立安装使用本公开仓，二者来源和更新方式不同。用户级技能目录不应执行 `yss init/attach/sync`。旧 CLI、插件与 `plan/apply` 流程不兼容新接口，首次切换由 Agent 下载正式发行包并使用新程序安装。
 
-## 维护
+## 内容与来源
 
-公开内容由 [yss-spec-project-template](https://github.com/iloveZzz/yss-spec-project-template) 的 `.agents/skills` 单向导出生成。目标仓库不作为技能权威源，也不应直接反向覆盖模板内容。
+- `skills/` 保存公开技能、引用和资产；每项必要的模板资料与跨技能引用资源放在该技能内。
+- `skills.sh.json` 对应实际目录；`.yss-export-manifest.json` 记录真实模板提交与导出文件摘要。
+- 技能源和宿主副本在模板仓维护，公开仓不反向覆盖模板；历史平台证据通过固定源码链接引用，不作为安装或发布门禁。
+- 安装后的宿主发现与 skills.sh 索引更新取决于实际宿主和服务状态；GitHub 同步不代表页面已刷新。
 
 ## 许可证
 
-本仓库原创内容采用 [MIT License](./LICENSE)。Maven Wrapper 等第三方支持文件的声明见 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)；若其他支持文件包含第三方代码、素材或其衍生内容，以该内容附带的许可证或声明为准，无法确认许可时不要发布该文件。
+原创内容采用 [MIT License](LICENSE)。保留第三方文件的许可证与声明，参见 [第三方声明](THIRD-PARTY-NOTICES.md)。
