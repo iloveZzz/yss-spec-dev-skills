@@ -6,4 +6,5 @@
 
 发布或再分发包含第三方文件的版本时，请同时保留本声明、文件内的版权/许可证头和上游许可证要求的其他通知。
 
-- `skills/yss-design-system/LICENSE` 与两个 `SHADCN-LICENSE.txt` 保留设计资产及 shadcn 衍生内容的 MIT 许可；相应文件继续适用各自版权和许可证。
+- `skills/yss-design-system/LICENSE` 适用于原创设计资料；`skills/yss-design-system/assets/prototype/SHADCN-LICENSE.txt` 与 `skills/yss-design-system/assets/shadcn-vue-authoring/SHADCN-LICENSE.txt` 保留 shadcn-vue 的 MIT 许可。固定组件快照随设计技能分发。
+- `skills/yss-design-system/references/shared/show-me-LICENSE.txt` 保留 HumanLayer show-me 的完整 MIT 声明；图解来源及适配说明见同目录的 `show-me-source.md`。
