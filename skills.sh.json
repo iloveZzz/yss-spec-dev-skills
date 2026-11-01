@@ -29,7 +29,7 @@
     },
     {
       "title": "产品设计",
-      "description": "用于 YSS 设计系统与产品原型阶段的技能。",
+      "description": "用于产品设计、UI 原型与交互说明；yss-design-system 包含独立安装所需的组件与图解参考。",
       "skills": [
         "yss-design-system",
         "yss-prototype-stage"
