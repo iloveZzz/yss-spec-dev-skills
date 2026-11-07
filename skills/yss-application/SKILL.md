@@ -3,7 +3,7 @@ name: yss-application
 description: 实现或排查 YSS 用例编排、事务边界、跨聚合协作、幂等和用例层模型转换。
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # YSS 用例实现
 

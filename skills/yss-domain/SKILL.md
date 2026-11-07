@@ -3,7 +3,7 @@ name: yss-domain
 description: 在已确认的 DDD 边界内实现或重构领域行为、不变量、状态机与 Gateway；不起草领域设计。
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # YSS 领域实现
 

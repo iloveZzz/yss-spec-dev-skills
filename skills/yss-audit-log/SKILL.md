@@ -3,7 +3,7 @@ name: yss-audit-log
 description: "接入或排查 YSS AuditLog 的 SpEL 摘要、异步发布、订阅注册与审计投递。"
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # yss-audit-log
 
@@ -24,11 +24,11 @@ description: "接入或排查 YSS AuditLog 的 SpEL 摘要、异步发布、订�
 
 ## 源码索引
 
-- 源码位置不要假设固定目录；先按 `references/shared/skills/yss-skill-source-index-refresh/references/source-location.md` 定位。
+- 源码位置不要假设固定目录；先按 [源码定位策略](references/shared/skills/yss-skill-source-index-refresh/references/source-location.md) 定位。
 - 当前技能索引：`references/source-index.md`
 - 重点源码入口通常包括审计注解、启用注解、切面、发布服务、事件模型、默认订阅器。
 
-当组件源码变化后，用 `yss-skill-source-index-refresh` 刷新索引；刷新或读取前先按源码定位策略确认真实位置。
+组件源码变化时按真实源码说明差异；只有收到索引维护请求并具备对应写入授权时，才使用 `yss-skill-source-index-refresh` 修改技能源或受管副本。读取或刷新前都先确认真实位置。
 
 ## 接入检查清单
 

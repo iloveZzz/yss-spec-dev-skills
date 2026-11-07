@@ -478,7 +478,7 @@
       "artifact_resolution_evidence": {
         "report_id": "aliyun-maven-artifact-resolution-2026-09-18",
         "repository_id": "2306938-snapshot-Yloqmt",
-        "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/aliyun-artifact-resolution.json",
+        "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/aliyun-artifact-resolution.json",
         "digest": "sha256:35a82e84eb93d35046900886affb806f3620b1416b4b097f67f42c658b676bca"
       }
     },
@@ -850,12 +850,12 @@
           "evidence": [
             {
               "architecture_family": "domain-driven",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/contract.dto-wire.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/contract.dto-wire.json",
               "digest": "sha256:de843385de40f7fb814596f377d64d2a7ff23a045e7dba08834b36e8839167c6"
             },
             {
               "architecture_family": "layered-mvc",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/contract.dto-wire.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/contract.dto-wire.json",
               "digest": "sha256:1c645a6869e5fbd711209e020a8988befb330e129d82a76dc7bd0cc7b50a84e0"
             }
           ],
@@ -885,12 +885,12 @@
           "evidence": [
             {
               "architecture_family": "domain-driven",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/contract.error-mapping.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/contract.error-mapping.json",
               "digest": "sha256:7a40a2a8ad5f57f15a4dae18da5cc14df57fc212b447b75696642013be7944a0"
             },
             {
               "architecture_family": "layered-mvc",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/contract.error-mapping.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/contract.error-mapping.json",
               "digest": "sha256:84758770aaafdd5057f9607be8bbc53d825d1b87f2cb5cf7f17ae2f2660fd4e5"
             }
           ],
@@ -938,12 +938,12 @@
           "evidence": [
             {
               "architecture_family": "domain-driven",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/framework.mybatis.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/framework.mybatis.json",
               "digest": "sha256:1f89fd5708c56f660bc9e9a2f9e19780afc30984234891dddca48e860188666b"
             },
             {
               "architecture_family": "layered-mvc",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/framework.mybatis.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/framework.mybatis.json",
               "digest": "sha256:cd13e5d4d957aab2ab224184222e639a191a9c70b960a332285e455c4b0e3b1e"
             }
           ],
@@ -974,12 +974,12 @@
           "evidence": [
             {
               "architecture_family": "domain-driven",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/contract.request-validation.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/contract.request-validation.json",
               "digest": "sha256:1c9e397544cde98d8e839754f82eda9b11b81b582a53c1db7dc61f8ccea58f10"
             },
             {
               "architecture_family": "layered-mvc",
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/contract.request-validation.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/contract.request-validation.json",
               "digest": "sha256:90c6205e9b8c4ddf2f20c494ddcfa38f6d1bb35e6c399689d417562a11e667da"
             }
           ],
@@ -993,17 +993,17 @@
       "evidence": [
         {
           "architecture_family": "domain-driven",
-          "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/qualification.json",
+          "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/ddd/qualification.json",
           "digest": "sha256:9bdaaa72dc3972f9cf890405d47fde81523203a888b3645c8dd2b2ca8b552e56"
         },
         {
           "architecture_family": "layered-mvc",
-          "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/qualification.json",
+          "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/mvc/qualification.json",
           "digest": "sha256:de5717e50a6ffdc12b6f3e635de5b3a2c16da2f2672adac666744e83762a94b9"
         }
       ],
       "artifact_resolution_evidence": {
-        "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/resolution.json",
+        "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/resolution.json",
         "digest": "sha256:e5712f4b7472252292220ba4630ae3750a53646b7bc9b7d42c5f03209df23513",
         "report_id": "scaffold-platform-3.2.0-20261013",
         "repository_id": "2306938-snapshot-Yloqmt"
@@ -1022,7 +1022,7 @@
           "source_tree": "0ca3167d6b9e57d1da9ae7a291ed53499babfb0b",
           "evidence": [
             {
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/resolution.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/resolution.json",
               "digest": "sha256:e5712f4b7472252292220ba4630ae3750a53646b7bc9b7d42c5f03209df23513"
             }
           ],
@@ -1042,7 +1042,7 @@
           "source_tree": "5eaf577169e0d147c4b6ca4cf4170249ef6eebb5",
           "evidence": [
             {
-              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/e8e4fdb5e59bccae0935e390e44077b7d6e888d8/.template-spec/engineering/evidence/scaffold-3.2.0/resolution.json",
+              "ref": "https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/engineering/evidence/scaffold-3.2.0/resolution.json",
               "digest": "sha256:e5712f4b7472252292220ba4630ae3750a53646b7bc9b7d42c5f03209df23513"
             }
           ],

@@ -1,5 +1,5 @@
-# ShowMe 图解方法来源
+# 图解方法来源
 
-2026-11-01 核验 HumanLayer [show-me](https://github.com/humanlayer/skills/blob/69d5fc61d6ca6f7056d283a2ee2a045be741a1d6/plugins/show-me/skills/show-me/SKILL.md)，固定提交 `69d5fc61d6ca6f7056d283a2ee2a045be741a1d6`。保留最小视图与变更对照思路，补充 YSS 状态/界面区别、规则引用、未决项和教学样例，不复制平台专用预览命令或增加独立技能入口。
+上游：[HumanLayer show-me](https://github.com/humanlayer/skills/tree/69d5fc61d6ca6f7056d283a2ee2a045be741a1d6/plugins/show-me/skills/show-me)，固定提交 `69d5fc61d6ca6f7056d283a2ee2a045be741a1d6`，核对日期 2026-11-07。
 
-[图解方法](visual-explanation.md) 与 [完整 MIT 许可](show-me-LICENSE.txt) 从模板提交 `624b7a7aed030e72761b6123919bad70862d14da` 的 `i-have-adhd/references/` 投影，方法与许可保持源字节；只从唯一内容源同步，不在公开包独立维护。
+本包的 [图解方法](visual-explanation.md) 来自 YSS 共享方法，按 Spec 的角色、规则和交互说明适配；[MIT 许可](show-me-LICENSE.txt) 保持上游声明。方法和许可是独立分发投影，不新增技能入口或扩大调用权限。

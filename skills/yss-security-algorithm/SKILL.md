@@ -3,7 +3,7 @@ name: yss-security-algorithm
 description: "审查、迁移或排查既有 YSS 加解密、JWT/JWK、密码编码与密钥使用；当前组件禁止新生产接入。"
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # yss-security-algorithm
 

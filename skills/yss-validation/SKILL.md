@@ -3,7 +3,7 @@ name: yss-validation
 description: "接入或排查 YSS Bean Validation、校验消息与校验错误映射。"
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # yss-validation
 

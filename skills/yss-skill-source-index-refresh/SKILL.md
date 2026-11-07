@@ -4,7 +4,7 @@ description: 后端组件源码或前端 YSS UI 文档变化后，刷新技能�
 disable-model-invocation: true
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # 技能来源索引维护
 

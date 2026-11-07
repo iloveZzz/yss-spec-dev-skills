@@ -1,0 +1,5 @@
+interface:
+  display_name: "Spec 业务拆票"
+  short_description: "明确要求时组织业务票，保留原规则、验收和业务依赖"
+policy:
+  allow_implicit_invocation: false

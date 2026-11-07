@@ -3,7 +3,7 @@ name: yss-ddd-scaffold-generator
 description: 直接生成 YSS DDD 多模块后端脚手架，无需需求合同或设计审批。
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # YSS DDD 工程生成
 

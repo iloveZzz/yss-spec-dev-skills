@@ -3,7 +3,7 @@ name: yss-excel-mvc
 description: "实现或排查 YSS Spring MVC Excel 导入导出、RequestExcel、ResponseExcel 和动态列。"
 ---
 
-> 项目的 AGENTS.md、CONTEXT.md 与业务文档由消费项目提供；本包内引用资源随技能分发。
+> 项目的 AGENTS.md、CONTEXT.md、DESIGN.md 与业务资料由消费项目提供；本包内必要参考随技能分发。
 
 # yss-excel-mvc
 
@@ -25,11 +25,11 @@ description: "实现或排查 YSS Spring MVC Excel 导入导出、RequestExcel�
 
 ## 源码索引
 
-- 源码位置不要假设固定目录；先按 `references/shared/skills/yss-skill-source-index-refresh/references/source-location.md` 定位。
+- 源码位置不要假设固定目录；先按 [源码定位策略](references/shared/skills/yss-skill-source-index-refresh/references/source-location.md) 定位。
 - 当前技能索引：`references/source-index.md`
 - 重点源码入口通常包括 `RequestExcel`、`ResponseExcel`、`ExcelDynamicData`、参数解析器、返回值处理器、starter 配置。
 
-当组件源码变化后，用 `yss-skill-source-index-refresh` 刷新索引；刷新或读取前先按源码定位策略确认真实位置。
+组件源码变化时按真实源码说明差异；只有收到索引维护请求并具备对应写入授权时，才使用 `yss-skill-source-index-refresh` 修改技能源或受管副本。读取或刷新前都先确认真实位置。
 
 ## 常见实现路径
 

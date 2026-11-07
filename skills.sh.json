@@ -7,8 +7,6 @@
       "description": "用于 CLI、Skills 安装、规格任务整理与技能来源维护。",
       "skills": [
         "setup-yss-harness",
-        "yss-product-lifecycle",
-        "yss-implementation-contract-compiler",
         "yss-skill-source-index-refresh"
       ]
     },
@@ -28,18 +26,30 @@
       ]
     },
     {
-      "title": "产品设计",
-      "description": "用于产品设计、UI 原型与交互说明；yss-design-system 包含独立安装所需的组件与图解参考。",
+      "title": "Spec 研究、设计与交付",
+      "description": "用于研究、业务分析、澄清、完整规格、原型及说明；显式入口遵循原调用政策。",
       "skills": [
+        "yss-product-lifecycle",
+        "yss-research",
+        "yss-stage-decision",
+        "grilling",
+        "domain-modeling",
+        "wayfinder",
+        "to-spec",
         "yss-design-system",
-        "yss-prototype-stage"
+        "prototype",
+        "prototype-review",
+        "to-tickets",
+        "triage",
+        "llm-wiki",
+        "i-have-adhd",
+        "handoff"
       ]
     },
     {
       "title": "OpenAPI",
       "description": "用于 YSS API 设计、审查、治理和生成集成的技能。",
       "skills": [
-        "yss-openapi-draft-review",
         "yss-openapi-governance"
       ]
     },
@@ -63,6 +73,16 @@
       "description": "用于应用审计日志的接入与排查。",
       "skills": [
         "yss-audit-log"
+      ]
+    },
+    {
+      "title": "Vue 前端工程与原型逻辑",
+      "description": "用于 Vue 应用工程、设计还原，以及状态、数据流、生命周期与 composable 方法。",
+      "skills": [
+        "yss-frontend-application",
+        "vue-best-practices",
+        "create-adaptable-composable",
+        "yss-frontend-scaffold-generator"
       ]
     }
   ]
