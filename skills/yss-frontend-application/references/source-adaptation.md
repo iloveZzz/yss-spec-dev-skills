@@ -60,3 +60,17 @@ OpenAPI 补充核对：参考锁文件为 Orval 7.10.0，配置的 `client: 'axi
 ## 原生最小工程整合（2026-11-07）
 
 后续以 SCRM `a5a331548bf7d2d4c46153506c4b823b4bcd14eb` 为固定参考，新增轻量 `yss-frontend-scaffold-generator` 与 CLI 静态资源。先前“不分发模板”描述只适用于应用技能包；Bundle 单独提供裁剪后的最小 starter。请求与 OpenAPI 保留按需参考，不预装其运行依赖；详见 [整合边界](integration-design.md)。
+
+## 官方组件复用方法（2026-11-08）
+
+本次依据用户确认的自主接入范围和[官方组件目录](https://shadcn-vue.com/docs/components)、[配置](https://shadcn-vue.com/docs/components-json)、[CLI](https://shadcn-vue.com/docs/cli)完善组件参考。另核对官方 Skill 的 `d9aec43ae5eb258d62d532cc788c0f693c07bd5b` 来源，保留上表原始引入记录；本地方法适配不冒充上游升级，不复制完整 Skill 或继承其自动命令、强制表单库及 preset 政策。
+
+共享组件参考可作为叶子随设计技能分发，按实际任务选择本地/固定清单/官方固定源码。CLI 精确版本和组件 revision 分别核验；不因官方目录扩充而下载全部组件。本次方法变化不更新固定组件、许可或应用依赖锁；运行和宿主发现的实际结果应按当前任务说明。
+
+## 模块边界检查方法（2026-11-08）
+
+参考 Matt Skills 的实验性 [setup-ts-deep-modules](https://github.com/mattpocock/skills/blob/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/in-progress/setup-ts-deep-modules/SKILL.md)，仅采纳“已确认边界交给适用工具，并故意制造违规验证规则有效”的方法。落实在 [工程检查](quality-tooling.md)，保留目标工程的目录、入口与工具选择，不引入其技能入口、固定包布局、示例包或 dependency-cruiser 依赖。
+
+本次核对 [ESLint no-restricted-imports 官方说明](https://eslint.org/docs/latest/rules/no-restricted-imports)：该规则处理静态导入文本；review 中的临时样例实测，原正则拒绝通常写法，却漏过指向相同内部文件的含 `./` 写法。后续仅做文件路径规范化的样例仍漏过 URL 编码写法，改按 [Node v24.14.1 的 ESM URL 语义](https://github.com/nodejs/node/blob/v24.14.1/doc/api/esm.md#urls)解析文件路径后补验通过；文件路径判定不等同于模块缓存身份。因此验证方法增加平台模块标识、等价路径与重导出覆盖；不能以典型路径报错推导动态导入、完整依赖图或运行时权限已验证。此参考不固定应用的 ESLint 版本，也不授权为普通改动安装架构检查工具。
+
+同日按用户要求补充按需扩展条件，核对 [Vite 别名](https://vite.dev/config/shared-options.html#resolve-alias)与 [preserveSymlinks](https://vite.dev/config/shared-options.html#resolve-preservesymlinks)、[动态导入](https://vite.dev/guide/features.html#dynamic-import)与 [glob](https://vite.dev/guide/features.html#glob-import)、[TypeScript paths](https://www.typescriptlang.org/tsconfig/paths.html)。类型路径声明、构建器转换、链接路径与真实目标分别核实，不把支持某种语法等同于边界工具已覆盖；依赖环按实际图和项目约定判断。本次补充只修改方法说明，不构成四类检查已在实际工程接入或通过的证据。

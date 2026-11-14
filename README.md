@@ -2,7 +2,7 @@
 
 用于 CLI 与 Skills 安装、业务规格、产品设计、Java 后端及 Vue 前端的 **41 项公开技能**。内容从 [模板仓](https://github.com/iloveZzz/yss-spec-project-template) 的共享源单向整理，公开集合与已确认白名单一致。
 
-> 2026-11-07 同步：41 项技能来自 [Template 5.3.2](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.3.2) 的真实提交 [`3df1f846`](https://github.com/iloveZzz/yss-spec-project-template/commit/3df1f846ec68fd4ab3a78d33815025d392c1e9b2)；来源记录与 1362 个文件摘要对应实际分发内容。独立技能与 CLI 内嵌 Bundle 分别更新。
+> 2026-11-15 部分同步：`setup-yss-harness`、`yss-design-system`、`yss-frontend-application`、`yss-frontend-scaffold-generator` 更新至已发布的 [Template 5.5.0](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.5.0)，真实源提交为 [`f74ea1ef`](https://github.com/iloveZzz/yss-spec-project-template/commit/f74ea1ef44d9ff9e313a747c496787613e55443d)。其余 37 项仍保留 [Template 5.3.2](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.3.2) 提交 [`3df1f846`](https://github.com/iloveZzz/yss-spec-project-template/commit/3df1f846ec68fd4ab3a78d33815025d392c1e9b2) 的内容和来源。独立技能与 CLI 内嵌 Bundle 分别更新。
 
 ## 选择技能并安装
 
@@ -11,7 +11,9 @@
 ```sh
 npx skills@latest add iloveZzz/yss-spec-dev-skills --list
 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill setup-yss-harness --agent codex
+npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-design-system --agent codex
 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-frontend-application --agent codex
+npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-frontend-scaffold-generator --agent codex
 npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-validation --agent claude-code
 ```
 
@@ -27,7 +29,7 @@ npx skills@latest add iloveZzz/yss-spec-dev-skills --skill yss-validation --agen
 | 独立技能 | 本公开仓实际分发提交及逐项模板来源 | 按原安装来源和工具实际支持的方式更新选定技能 |
 | 应用源码生成 | CLI 内嵌 starter | 只生成新目录；源码、依赖安装与技能接入分别处理 |
 
-本次配套 [CLI 3.3.1](https://github.com/iloveZzz/yss-cli/releases/tag/v3.3.1) 内嵌同源 [Template 5.3.2](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.3.2)。这些版本说明本次发行，不作为未来固定 latest；公开仓更新也不会替换已安装的程序或自动同步消费项目。
+已发布的 [CLI 3.5.0](https://github.com/iloveZzz/yss-cli/releases/tag/v3.5.0) 内嵌 [Template 5.5.0](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.5.0)，与本次更新的四项技能使用相同模板源；公开仓其余技能仍保留各自记录的来源。这些版本说明本次发行，不作为未来固定 latest；公开仓更新也不会替换已安装的程序或自动同步消费项目。
 
 Frontend Profile 从 CLI 3.2.0 起支持，安装技能和资料；`scaffold frontend` 从 3.3.0 起支持，仍需对应 Bundle。先读取实际程序的版本和目标命令帮助。旧 Go 安装格式与纯 Rust 不兼容，首次切换按 `setup-yss-harness` 使用新程序和新目录，保留旧安装。
 
@@ -60,7 +62,7 @@ CLI 生成源码要求父目录已存在、目标目录不存在，包括已有�
 
 | 技能 | 用途 |
 |---|---|
-| [setup-yss-harness](skills/setup-yss-harness/SKILL.md) | 安装或升级 YSS CLI，配置项目或用户级 Skills，初始化、接管、同步项目并处理安装冲突。 |
+| [setup-yss-harness](skills/setup-yss-harness/SKILL.md) | 安装或升级 YSS CLI，配置项目或用户级 Skills、产品 Home 仓库关系，初始化、接管、同步项目并处理安装冲突。 |
 | [yss-skill-source-index-refresh](skills/yss-skill-source-index-refresh/SKILL.md) | 后端组件源码或前端 YSS UI 文档变化后，刷新技能来源索引并核验平台线、组件摘要与引用。 |
 
 ### 后端
@@ -148,7 +150,7 @@ CLI 生成源码要求父目录已存在、目标目录不存在，包括已有�
 
 - 每项技能保留必要的正文、方法、静态资产、已有运行时元数据和许可证；跨技能方法按包投影到 `references/shared/`，供单项安装读取，不创建额外技能入口。
 - 资源投影来自同一共享源，包内相对路径会因独立分发改写。ShowMe 方法及许可保持源内容；有意标为缺陷的教学例子保留其缺失路径，不作为实际运行资源。
-- `skills.sh.json` 对应上述 41 项及七个分组。`.yss-export-manifest.json` 记录同一真实模板提交、41 项逐项来源及 1362 个最终文件的 SHA-256；模板源与公开分发提交分别记录，不用本地源提交冒称远端已发布。
+- `skills.sh.json` 对应上述 41 项及七个分组。`.yss-export-manifest.json` 的顶层 `source` 记录最近一次同步源，41 项的 `source_commit` 分别记录其真实来源，文件清单和 SHA-256 对应实际包内容；模板源与公开分发提交分别记录，不用本地源提交冒称远端已发布。
 - 模板源提交、公开分发提交和文件摘要分别说明。独立技能更新不会替换 CLI，受管项目也不会自动读取模板 main。
 - 原始引入信息保留在技能的 `upstream.json`、包内来源说明与许可中；共享技能适配历史见 [Matt 来源说明](https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/agents/matt-skills-adaptation.md) 和 [Frontend 来源说明](https://github.com/iloveZzz/yss-spec-project-template/blob/9887d0d9915a9edcf9679dca16a236cef0fd5efa/.template-spec/agents/frontend-skills-adaptation.md)。这些历史资料不构成安装或发布资格。
 - 结构核对不能证明宿主已加载、安装运行成功、Windows 原生验证或 skills.sh 收录。仅在实际观察后报告相应结果，不自动轮询收录或改变遥测设置。
