@@ -3,7 +3,7 @@
   "source": {
     "repository": "iloveZzz/yss-spec-project-template",
     "canonical_root": ".agents/skills",
-    "commit": "f74ea1ef44d9ff9e313a747c496787613e55443d"
+    "commit": "18fd61598ccca45f3bd2d91033c1f5a1e6e47176"
   },
   "skills": [
     {
@@ -13,9 +13,11 @@
       "files": [
         "LICENSE",
         "SKILL.md",
+        "references/host-compatibility.md",
+        "references/project-portability.md",
         "references/repositories-template.md"
       ],
-      "source_commit": "f74ea1ef44d9ff9e313a747c496787613e55443d"
+      "source_commit": "18fd61598ccca45f3bd2d91033c1f5a1e6e47176"
     },
     {
       "directory": "yss-audit-log",
@@ -1769,8 +1771,10 @@
     "prototype/SKILL.md": "40e69715135a65997755556deb4e3919d745fa0eaa46c33add500158ae090005",
     "prototype/agents/openai.yaml": "33f92bfcdec1f98a2be820abe9fa5f177198a360686ba9653096ee9b5eb49f2c",
     "setup-yss-harness/LICENSE": "e73690179b956cf6e67b3273eda241e843f106994ea6a2e6713827c8a15a7a08",
-    "setup-yss-harness/SKILL.md": "02ab221938b0f268856110b7a035b32878914660fd46e8e1f35a30a304e1802b",
-    "setup-yss-harness/references/repositories-template.md": "aa63f4f0e8df2d310e8d33d692de78a7c2b5445e262a87c71565843f297cef97",
+    "setup-yss-harness/SKILL.md": "bf96dc62be389f3befc1a6c02bde51438580118bb435cd645374e2a4c9e99463",
+    "setup-yss-harness/references/host-compatibility.md": "7591b0ef89355cac41734f2093fe1690e49b25c158ea74e587e9f8722e303288",
+    "setup-yss-harness/references/project-portability.md": "c135d31bf75310665de1569eac820df0f6cbffe9d388855736cb8b826a157e2b",
+    "setup-yss-harness/references/repositories-template.md": "2ad80dd0ce261b19566885a530f205be2b8326abd5d1ff693b4b509919d6e086",
     "to-spec/LICENSE": "e73690179b956cf6e67b3273eda241e843f106994ea6a2e6713827c8a15a7a08",
     "to-spec/SKILL.md": "eb39765eb04592eda421cf03c0da68f8373c06ca48a48f036d7885d8b7883a0d",
     "to-spec/agents/openai.yaml": "496d92a00ccc995b8622bf0b717ba9b40158a271afef2e7f3906d77aba926a77",
