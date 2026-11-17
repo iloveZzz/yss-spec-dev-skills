@@ -2,7 +2,7 @@
 
 用于 CLI 与 Skills 安装、业务规格、产品设计、Java 后端及 Vue 前端的 **41 项公开技能**。内容从 [模板仓](https://github.com/iloveZzz/yss-spec-project-template) 的共享源单向整理，公开集合与已确认白名单一致。
 
-> 2026-11-16 部分同步：`setup-yss-harness` 更新至模板源提交 [`18fd6159`](https://github.com/iloveZzz/yss-spec-project-template/commit/18fd61598ccca45f3bd2d91033c1f5a1e6e47176)。`yss-design-system`、`yss-frontend-application`、`yss-frontend-scaffold-generator` 保留 [Template 5.5.0](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.5.0) 提交 [`f74ea1ef`](https://github.com/iloveZzz/yss-spec-project-template/commit/f74ea1ef44d9ff9e313a747c496787613e55443d) 的内容；其余 37 项仍保留 [Template 5.3.2](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.3.2) 提交 [`3df1f846`](https://github.com/iloveZzz/yss-spec-project-template/commit/3df1f846ec68fd4ab3a78d33815025d392c1e9b2) 的内容和来源。独立技能与 CLI 内嵌 Bundle 分别更新。
+> 2026-11-17 部分同步，`setup-yss-harness` 更新至模板源提交 [`f85c038f`](https://github.com/iloveZzz/yss-spec-project-template/commit/f85c038f135a6dbe107baca0fab591f2674327db)，补充工程初始化、Git/remote 与 tracker 配置及包内参考。`yss-design-system`、`yss-frontend-application`、`yss-frontend-scaffold-generator` 保留 [Template 5.5.0](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.5.0) 提交 [`f74ea1ef`](https://github.com/iloveZzz/yss-spec-project-template/commit/f74ea1ef44d9ff9e313a747c496787613e55443d) 的内容；其余 37 项仍保留 [Template 5.3.2](https://github.com/iloveZzz/yss-spec-project-template/releases/tag/v5.3.2) 提交 [`3df1f846`](https://github.com/iloveZzz/yss-spec-project-template/commit/3df1f846ec68fd4ab3a78d33815025d392c1e9b2) 的内容和来源。独立技能与 CLI 内嵌 Bundle 分别更新。
 
 ## 选择技能并安装
 
@@ -62,7 +62,7 @@ CLI 生成源码要求父目录已存在、目标目录不存在，包括已有�
 
 | 技能 | 用途 |
 |---|---|
-| [setup-yss-harness](skills/setup-yss-harness/SKILL.md) | 安装或升级 YSS CLI，配置项目或用户级 Skills、产品 Home 仓库关系，初始化、接管、同步项目并处理安装冲突。 |
+| [setup-yss-harness](skills/setup-yss-harness/SKILL.md) | 安装或升级 YSS CLI 与 Skills；初始化或接入工程时配置 Git、远程仓库、Issue tracker 和产品 Home 关系，并处理同步冲突。 |
 | [yss-skill-source-index-refresh](skills/yss-skill-source-index-refresh/SKILL.md) | 后端组件源码或前端 YSS UI 文档变化后，刷新技能来源索引并核验平台线、组件摘要与引用。 |
 
 ### 后端
