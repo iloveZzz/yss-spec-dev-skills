@@ -3,7 +3,7 @@
   "source": {
     "repository": "iloveZzz/yss-spec-project-template",
     "canonical_root": ".agents/skills",
-    "commit": "f85c038f135a6dbe107baca0fab591f2674327db"
+    "commit": "7f3e7683b0184673bcb8755f90caf1e61e4965a3"
   },
   "skills": [
     {
@@ -13,6 +13,7 @@
       "files": [
         "LICENSE",
         "SKILL.md",
+        "agents/openai.yaml",
         "references/host-compatibility.md",
         "references/project-onboarding.md",
         "references/project-portability.md",
@@ -20,7 +21,7 @@
         "references/shared/template/agents/issue-tracker-operations.md",
         "references/shared/template/agents/issue-tracker.md"
       ],
-      "source_commit": "f85c038f135a6dbe107baca0fab591f2674327db"
+      "source_commit": "7f3e7683b0184673bcb8755f90caf1e61e4965a3"
     },
     {
       "directory": "yss-audit-log",
@@ -1775,11 +1776,12 @@
     "prototype/agents/openai.yaml": "33f92bfcdec1f98a2be820abe9fa5f177198a360686ba9653096ee9b5eb49f2c",
     "setup-yss-harness/LICENSE": "e73690179b956cf6e67b3273eda241e843f106994ea6a2e6713827c8a15a7a08",
     "setup-yss-harness/SKILL.md": "c5433964f08aec9f99c2dc20b9d13549f43fc2b599b11a4b38b67f77f46d6af3",
+    "setup-yss-harness/agents/openai.yaml": "58a926fe910cc512448f4d180920d76b68935b5d3644e6729d8e69ac9267a1ac",
     "setup-yss-harness/references/host-compatibility.md": "1b64b1f9623c4c2ef7ddaeb9b9e6eae3822ed1d682d380217fbb1af9fd12a231",
     "setup-yss-harness/references/project-onboarding.md": "5eec72d21b593e0281b569c0e9322a15d70729775125c6559bc402a5d920b8e3",
     "setup-yss-harness/references/project-portability.md": "98e1c32062c2de2c7a92ecf7ef8c363ae5ba95e84d474c6ad7b6189707f6284a",
     "setup-yss-harness/references/repositories-template.md": "1f34d667f10bcd731c0cebe8ac48820a510d0a96921c2527e4d427fadf19aead",
-    "setup-yss-harness/references/shared/template/agents/issue-tracker-operations.md": "6a380194b9b51acf6201d9e909d8be61ad0c43184ca0f22f6435731046b6b1bd",
+    "setup-yss-harness/references/shared/template/agents/issue-tracker-operations.md": "2a2e7b14880e0ab9aea917b4ae8068110bfb6b82acecb7a3558f57b6b7add2f2",
     "setup-yss-harness/references/shared/template/agents/issue-tracker.md": "77b5d7e86e1bbae87d8604a77373ddb848801dc1abdf97af35a31cbd82730c83",
     "to-spec/LICENSE": "e73690179b956cf6e67b3273eda241e843f106994ea6a2e6713827c8a15a7a08",
     "to-spec/SKILL.md": "eb39765eb04592eda421cf03c0da68f8373c06ca48a48f036d7885d8b7883a0d",
